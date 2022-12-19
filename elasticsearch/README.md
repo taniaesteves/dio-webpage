@@ -1,1 +1,0 @@
-# Elasticsearch use case

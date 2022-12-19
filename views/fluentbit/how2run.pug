@@ -1,0 +1,93 @@
+extends ../layout.pug
+
+block navbar-options
+    li.nav-item
+        a.nav-link(href='/fluentbit') Description
+    li.nav-item.active
+        a.nav-link(href='/fluentbit/how2run') How to reproduce
+    li.nav-item
+        a.nav-link(href='/fluentbit/portfolio') Portfolio
+
+block content
+    h2(style='text-align: center;') Fluent Bit use case
+    h4(style='text-align: center;') How to reproduce
+
+    p
+        | This page describes how to reproduce the results presented in the paper for three setups:
+        ul
+            li <strong>Vanilla</strong>: without tracing I/O events
+            li <strong>strace</strong>: tracing system calls with strace
+            li <strong>DIO</strong>: tracing and analyzing system calls with DIO
+
+    h5 Fluent Bit configuration
+
+    ul
+        li <strong>Source code:</strong>
+            a(href='https://github.com/fluent/fluent-bit.git', style='color: blue;')  https://github.com/fluent/fluent-bit.git
+        li <strong>Commit:</strong> e6506b7b5364c77bec186d94e51c4b3b51e6fbac
+        li <strong>Env Configurations (mounting a new file system):</strong>
+            pre.codesnippet.
+                dd if=/dev/zero of=disk.img bs=1M count=128
+                mkfs.ext4 disk.img
+                mkdir -p /fluent-bit/tests/mnt
+                mount -o loop disk.img /fluent-bit/tests/mnt
+
+        li <strong>Configurations (<em>fluentbit.conf</em>):</strong>
+            pre.codesnippet.
+                [SERVICE]
+                    Flush        5
+                    Daemon       On
+                    Log_Level    trace
+
+                [INPUT]
+                    Name tail
+                    Tag  examplelogs
+                    DB   exampledb
+                    Path /fluent-bit/tests/mnt/*.log
+                    Mem_Buf_Limit     5MB
+                    Skip_Long_Lines   Off
+                    Refresh_Interval  10
+
+                [OUTPUT]
+                    Name  stdout
+                    Match *
+
+
+    h5 Client application
+    ul
+        li <strong>Description:</strong> A simple C program that:
+            ol
+                li creates a file named app.log, writes 26 bytes to it and closes it.
+                li waits for 10 seconds.
+                li removes the file.
+                li waits for 10 seconds.
+                li creates a new file named app.log, writes 16 bytes to it and closes it.
+
+    h5 DIO configuration
+    ul
+        li <strong>Tracer Configurations:</strong>
+            ul
+                li Filter events by specific Process IDs (<code>--pid</code>):
+                ul
+                    li Fluent Bit's PID
+                    li Client app's PID
+                li Filter events by file paths (<code>target_paths</code>):
+                ul
+                    li RocksDB folder: <code>/rocksdb/test/kvstore</code>
+
+    h5 Docker images
+    ul
+        li <strong>Docker image:</strong>
+            a(href='#URL_OMITTED', style='color: blue;')  DIO_FB_IMAGE_OMITTED (omitted due to double blind review)
+        li <strong>Run test:</strong>
+            ul
+                li <strong>Vanilla</strong>:
+                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ DIO_FB_IMAGE_OMITTED
+
+
+                li <strong>strace</strong>:
+                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v strace_data:/strace_data DIO_FB_IMAGE_OMITTED strace
+
+
+                li <strong>DIO</strong>:
+                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -v /tmp/dio/:/tmp/dio/ -e CORRELATE_PATHS=true -e ES_URL=<DIO_ES_URL>:<DIO_ES_PORT>  DIO_FB_IMAGE_OMITTED dio

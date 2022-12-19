@@ -1,0 +1,73 @@
+extends ../layout.pug
+
+block navbar-options
+    li.nav-item
+        a.nav-link(href='/fluentbit') Description
+    li.nav-item
+        a.nav-link(href='/fluentbit/how2run') How to reproduce
+    li.nav-item.active
+        a.nav-link(href='/fluentbit/portfolio') Portfolio
+
+block content
+    h2(style='text-align: center;') Fluent Bit use case
+    .row
+        .col-xs-6
+            h4 Portfolio
+        .col-xs-6
+            .info
+                i.fa.fa-info-circle
+                span.extra-info
+                    | Click on an image for more details
+
+    // First Photo Grid
+    .w3-row-padding.w3-padding-16.w3-center
+        .w3-third
+            img.specImage(src='/image/fluentbit/stats.png' alt='System overview' style='width:100%')
+            h3.specTitle System overview
+            p.specDescription Generic statistics about the application execution
+            .specExplanation
+                p
+                    | <code>fluent-bit</code> and <code>app</code> together issued about 2,000 storage system calls, most of which were <code>read</code> syscalls.
+                    | <br>In total, <code>6</code> processes and <code>7</code> threads were spawned, and more than <code>500</code> files were accessed.
+        .w3-third
+            img.specImage(src='/image/fluentbit/data_meta.png' alt='System overview' style='width:100%')
+            h3.specTitle Percentage of data vs metadata
+            p.specDescription Shows the percentage of data and metadata-related system calls
+            .specExplanation
+                p
+                    | <code>67%</code> of the system calls were <code>metadata-related</code>, while <code>33%</code> were <code>data-related</code>.
+        .w3-third
+            img.specImage(src='/image/fluentbit/exec_time.png' alt='System overview' style='width:100%')
+            h3.specTitle Execution time per syscall
+            p.specDescription Shows the average execution time for the top 5 syscalls
+            .specExplanation
+                p
+                    | The system call with the highest average execution time was <code>openat</code>, which took <code>128</code> milliseconds on average.
+                    | <br>The <code>fsync</code> system call was the second most expensive syscall, with an average execution time of <code>1,68</code> milliseconds.
+
+    .w3-row-padding.w3-padding-16.w3-center
+        .w3-third
+            img.specImage(src='/image/fluentbit/file_types.png' alt='System overview' style='width:100%')
+            h3.specTitle Top file types
+            p.specDescription Shows the type of files accessed by the application and the number of system calls issued for each file type
+            .specExplanation
+                p
+                    | The top file types accessed during the app execution were: 1600 syscalls for <code>Regular files</code>, ~100 syscalls for <code>Pipes</code>, and less than 50 syscalls for <code>Char devices</code>, <code>Directories</code> and <code>Unknown type</code>.
+        .w3-third
+            img.specImage(src='/image/fluentbit/file_per_command.png' alt='System overview' style='width:100%')
+            h3.specTitle File accesses per command
+            p.specDescription Shows the total number of syscalls issued to files by each command
+            .specExplanation
+                p
+                    | Two files were accessed both by Fluent Bit and the client application: <code>app.log</code> and <code>/dev/pts/0</code>.
+                    | <br><code>66%</code> of the syscalls were issued to the <code>app.log</code> were made by by Fluent Bit.
+        .w3-third
+            img.specImage(src='/image/fluentbit/Fluentbit-table.png' alt='System overview' style='width:100%')
+            h3.specTitle File access pattern for app.log file
+            p.specDescription Shows the access pattern for the app.log file performed both by Fluent Bit and the client application
+            .specExplanation
+                p
+                    | The <code>app</code> command creates the app.log file, writes 26 bytes to offset 0 and closes it.
+                    | <br>Fluent Bit opens the app.log file and reads the 26 bytes from offset 0.
+                    | <br><code>app</code> then removes the file and creates a new one with the same name, to which it writes 16 bytes at <code>offset 0</code>.
+                    | <br>Fluent Bit opens the new app.log file and attempts to read from <code>offset 26</code>, which returns 0.

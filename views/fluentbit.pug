@@ -1,0 +1,84 @@
+extends layout.pug
+
+block navbar-options
+    li.nav-item.active
+        a.nav-link(href='/fluentbit') Description
+    li.nav-item
+        a.nav-link(href='/fluentbit/how2run') How to reproduce
+    li.nav-item
+        a.nav-link(href='/fluentbit/portfolio') Portfolio
+
+block content
+    h2(style='text-align: center;') Fluent Bit use case
+
+    p
+        | This use case considers the diagnosis of a data loss issue identified in the Fluent Bit application.
+        | <br>The instructions to reproduce the use case are available at
+        a(href='/fluentbit/how2run', target='_blank', style='color: blue;')  how to reproduce
+        | , while an extendend set of visualizations provided by DIO are available at
+        a(href='/fluentbit/portfolio', target='_blank', style='color: blue;')  portfolio.
+
+    h5 Problem
+    p
+        | Existing issues (
+        a(href='https://github.com/fluent/fluent-bit/issues/1875', target='_blank', style='color: blue;') #1875
+        | ,
+        a(href='https://github.com/fluent/fluent-bit/issues/4895', target='_blank', style='color: blue;') #4895
+
+        |) report that log data is lost when using the tail input plugin, which is used to fetch new content being added to log files.
+
+    h5 Diagnosis
+    p
+        | Using DIO to analyze the application execution, we obtained the following information (see Figure 1):
+        ul
+            li
+                | The client program (<code>app</code>) starts by creating the <code>app.log</code> file, writing <code>26</code> bytes starting from offset <code>0</code>, and closing the file (
+                span.blackcircle 1
+                |).
+            li
+                | Then, Fluent Bit (<code>fluent-bit</code>) detects content modification at the file, opens it, and reads <code>26</code> bytes from offset <code>0</code>, which means that <code>fluent-bit</code> processes the full content previously written by <code>app</code> (
+                span.blackcircle 2
+                |).
+            li
+                | Later, <code>app</code> removes the file with the <code>unlink</code> syscall(
+                span.blackcircle 3
+                |).
+            li
+                | <code>app</code> then creates a new file with the same name as the previous one (<code>app.log</code>) and writes <code>16</code> bytes to it (
+                span.blackcircle 4
+                |).
+            li
+                | <code>fluent-bit</code> opens the new log file for reading its content, but instead of reading from offset <code>0</code>, as expected, it starts reading at offset <code>26</code> (
+                span.blackcircle 5
+                |).
+            li
+                | By starting at the wrong offset, the <code>read</code> syscall returns <code>zero</code> bytes and <strong>the 16 bytes written by <code>app</code> are lost</strong>.
+
+    img(src="/image/fluentbit/FluentBit.png", alt="", style="width: 50%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    p(style="text-align: center") <em>Figure 1. Fluent Bit erroneous access pattern leading to data loss.</em>
+
+
+    h5 Explanation
+    p
+        | When a file is removed, the operating system releases the associated inode number (<code>12</code>), which can later be attributed to a new file.
+        | However, a possible scenario is this inode number being mapped to a newly created file with the same name.
+        | This is what happens in this case, as the inode number of the file <code>app.log</code> is reused for the new file created by <code>app</code>.
+    p
+        | Before reading a file, Fluent Bit updates the file position to the number of bytes already processed.
+        | This value is kept on a database for each tracked file, identified by its name plus inode number.
+        | Erroneously, database entries are not deleted when files are removed at the file system.
+        | Therefore, since the same file name (<code>app.log</code>) and inode number (<code>12</code>) are attributed to the newly created file, <code>fluent-bit</code> erroneously assumes that the first <code>26</code> bytes of the latter log file were already processed.
+
+
+    //- p
+    //-     | <strong>Solution</strong>: As suggested in the Pull Request for the issue, this inefficient I/O pattern can be fixed by:
+    //-     ul
+    //-         li keeping the log's file descriptor opened while the file is being used, and
+    //-         li using <code>writev</code> to write log lines more efficiently.
+
+    //- p
+    //-     | <strong>Validation</strong>: Using DIO, we are also able to validate the proposed solution by observing the new access pattern for the log file.
+    //-     With the suggested fix redundant <code>open</code> and <code>close</code> operations are avoided, along with the need for using <code>lseek</code> before every write operation. Also, <code>writev</code> is now used to write log lines, instead of <code>write</code>.
+
+    //- img(src="/image/redis/redis-new.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    //- p(style="text-align: center") <em>Figure 2. Log file access pattern, depicting syscalls issued over time (v2)</em>

@@ -1,0 +1,59 @@
+extends layout.pug
+
+block navbar-options
+    li.nav-item.active
+        a.nav-link(href='/rocksdb') Description
+    li.nav-item
+        a.nav-link(href='/rocksdb/how2run') How to reproduce
+    li.nav-item
+        a.nav-link(href='/rocksdb/portfolio') Portfolio
+
+block content
+    h2(style='text-align: center;') RocksDB use case
+
+    p
+        | This use case aims at identifying the root cause for high tail latency at client requests issued to RocksDB.
+        | <br>The instructions to reproduce the use case are available at
+        a(href='/rocksdb/how2run', target='_blank', style='color: blue;')  how to reproduce
+        | , while an extendend set of visualizations provided by DIO are available at
+        a(href='/rocksdb/portfolio', target='_blank', style='color: blue;')  portfolio.
+
+    h5 Problem
+    p
+        | As shown in Figure 1, RocksDB suffers from <strong>high tail latencies</strong>, where clients observe several latency spikes (e.g., ranging between <code>1.5</code> ms to <code>3.5</code> ms).
+
+    img(src="/image/rocksdb/rocksdb_latency99th.png", alt="", style="width: 40%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    p(style="text-align: center") <em>Figure 1. 99th percentile latency for RocksDB client operations.</em>
+
+
+    h5 Diagnosis
+    p
+        | By using DIO to observe the syscalls submitted over time by different RocskDB thread groups, one can identify <strong>performance contention</strong>.
+        | Namely, as shown in Figure 2 by the highlighted
+        span(style="color: #c00000")  red boxes
+        | , when multiple compaction threads submit I/O requests, the number of syscalls of <em>db_bench</em> threads decreases, causing an immediate tail latency spike perceived by clients (
+        span.blackcircle 1
+        | &
+        span.blackcircle 2
+        | ).
+        | When fewer compaction threads perform I/O (
+        span(style="color: #000000") <strong>black boxes</strong>
+        | ), the performance of db_bench threads improves, both in terms of tail latency and throughput (
+        span.blackcircle 3
+        | &
+        span.blackcircle 4
+        | ).
+
+    img(src="/image/rocksdb/rocksdb.png", alt="", style="width: 70%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    p(style="text-align: center") <em>Figure 2. Syscalls issued by RocksDB over time, aggregated by thread name. <br>db_bench includes the 8 client threads, rocksdb:low[0-6] refers to each compaction thread, and rocksdb:high0 refers to the flush thread</em>
+
+    h5 Explanation
+    p
+        | RocksDB uses foreground threads to process client requests (<code>db_bench</code> threads), which are enqueued and served in FIFO order.
+        | In parallel, background threads serve internal operations, namely flushes (<code>rocksdb:high0</code>) and compactions (<code>rocksdb:lowX</code>).
+        | Flushes ensure that in-memory key-value pairs are sequentially written to the first level of the persistent LSM tree (L<sub>0</sub>), and these can only proceed when there is enough space at L<sub>0</sub>.
+        | Compactions are held in a FIFO queue, waiting to be executed by a dedicated threadpool.
+        | Except for low level compactions (L<sub>0</sub> →L<sub>1</sub> ), these can be made in parallel.
+        | <br>A common problem of compactions however, is the interference between I/O workflows, generating latency spikes for client requests.
+        | Specifically, latency spikes occur when client threads cannot proceed because L<sub>0</sub>→L<sub>1</sub> compactions and flushes are slow or on hold, which happens, for instance, when several threads compete for shared disk bandwidth (creating contention).
+

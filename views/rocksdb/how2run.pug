@@ -1,0 +1,83 @@
+extends ../layout.pug
+
+block navbar-options
+    li.nav-item
+        a.nav-link(href='/rocksdb') Description
+    li.nav-item.active
+        a.nav-link(href='/rocksdb/how2run') How to reproduce
+    li.nav-item
+        a.nav-link(href='/rocksdb/portfolio') Portfolio
+
+block content
+    h2(style='text-align: center;') RocksDB use case
+    h4(style='text-align: center;') How to reproduce
+
+    p
+        | This page describes how to reproduce the results presented in the paper for three setups:
+        ul
+            li <strong>Vanilla</strong>: without tracing I/O events
+            li <strong>strace</strong>: tracing system calls with strace
+            li <strong>DIO</strong>: tracing and analyzing system calls with DIO
+
+    h5 RocksDB configuration
+
+    ul
+        li <strong>Source code:</strong>
+            a(href='https://github.com/facebook/rocksdb', style='color: blue;')  https://github.com/facebook/rocksdb
+        li <strong>Version:</strong> 5.17.2
+        li <strong>Congigurations:</strong>
+            ul
+                li <code>level0_slowdown_writes_trigger = -1;</code>
+                li <code>level0_stop_writes_trigger = 100;</code>
+                li compaction threads = <code>7;</code>
+                li flush threads = <code>1;</code>
+        li <strong>Env Configurations:</strong>
+            ul
+                li Memory limit: 1024 MiB
+                li I/O limit (bytes per write operation): 200mb
+
+
+    h5 Benchmark configuration
+    ul
+        li <strong>Benchmark:</strong> db_bench
+        li <strong>Docker image:</strong> elastic/rally
+        li <strong>Configurations:</strong>
+            ul
+                li workload: YCSB A - a mixture of read-write requests in a close-loop.
+                li client threads: <code>8</code>
+                li number of operations: 100,000,000
+
+    h5 DIO configuration
+    ul
+        li <strong>Tracer Configurations:</strong>
+            ul
+                li Filter events by system call type (<code>target_events</code>):
+                ul
+                    li open, openat, creat
+                    li read, pread64, readv
+                    li write, pwrite64, writev
+                    li close
+                li Filter events by file paths (<code>target_paths</code>):
+                ul
+                    li RocksDB folder: <code>/rocksdb/test/kvstore</code>
+
+    h5 Docker images
+    ul
+        li <strong>Docker image:</strong>
+            a(href='#URL_OMITTED', style='color: blue;')  DIO_ROCKSDB_IMAGE_OMITTED (omitted due to double blind review)
+        li <strong>Load databae:</strong>
+        ul
+            li
+                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 DIO_ROCKSDB_IMAGE_OMITTED load
+        li <strong>Run db_bench (YCSB A):</strong>
+            ul
+                li <strong>Vanilla</strong>:
+                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ --device-write-bps /dev/sda:200mb --memory=1G -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 DIO_ROCKSDB_IMAGE_OMITTED ycsbwa
+
+
+                li <strong>strace</strong>:
+                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ --device-write-bps /dev/sda:200mb --memory=1G -v strace_data:/strace_data -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 DIO_ROCKSDB_IMAGE_OMITTED strace ycsbwa
+
+
+                li <strong>DIO</strong>:
+                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ --device-write-bps /dev/sda:200mb --memory=1G -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 DIO_ROCKSDB_IMAGE_OMITTED dio ycsbwa

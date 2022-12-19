@@ -1,0 +1,72 @@
+extends ../layout.pug
+
+block navbar-options
+    li.nav-item
+        a.nav-link(href='/elasticsearch') Description
+    li.nav-item.active
+        a.nav-link(href='/elasticsearch/how2run') How to reproduce
+    li.nav-item
+        a.nav-link(href='/elasticsearch/portfolio') Portfolio
+
+block content
+    h2(style='text-align: center;') Elasticsearch use case
+    h4(style='text-align: center;') How to reproduce
+
+    p
+        | This page describes how to reproduce the results presented in the paper for three setups:
+        ul
+            li <strong>Vanilla</strong>: without tracing I/O events
+            li <strong>strace</strong>: tracing system calls with strace
+            li <strong>DIO</strong>: tracing and analyzing system calls with DIO
+
+    h5 Elasticsearch configuration
+
+    ul
+        li <strong>Source code:</strong>
+            a(href='https://github.com/elastic/elasticsearch/releases/tag/v8.3.0', style='color: blue;')  https://github.com/elastic/elasticsearch/releases/tag/v8.3.0
+        li <strong>Version:</strong> 8.3.0
+        li <strong>Configurations <em>(elasticsearch.yml)</em>:</strong>
+            ul
+                li <code>xpack.security.enabled: false</code>
+                li <code>discovery.type: single-node</code>
+                li <code>network.host: 0.0.0.0</code>
+
+    h5 Benchmark configuration
+    ul
+        li <strong>Benchmark:</strong> Rally
+        li <strong>Repository:</strong>
+            a(href='https://esrally.readthedocs.io/en/stable/install.html', style='color: blue;')  https://esrally.readthedocs.io/en/stable/install.html
+        li <strong>Docker image:</strong> elastic/rally
+        li <strong>Configurations:</strong>
+            ul
+                li workload: geonames (<code>--track=geonames</code>)
+                li pipeline: benchmark-only (<code>--pipeline=benchmark-only</code>)
+                li target host: local elasticsearch instance (<code>--target-hosts=localhost:9200</code>)
+
+    h5 DIO configuration
+    ul
+        li <strong>Tracer Configurations:</strong>
+            ul
+                li Filter events by file paths (<code>target_paths</code>):
+                ul
+                    li Elasticsearch folder: <code>/usr/share/elasticsearch-8.3.0-SNAPSHOT</code>
+
+    h5 Docker images
+    ul
+        li <strong>Docker image:</strong>
+            a(href='#URL_OMITTED', style='color: blue;')  DIO_ES_IMAGE_OMITTED (omitted due to double blind review)
+        li <strong>Run Elasticsearch server:</strong>
+            ul
+                li <strong>Vanilla</strong>:
+                xmp docker run -it --rm --name es830  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ DIO_ES_IMAGE_OMITTED
+
+                li <strong>strace</strong>:
+                xmp docker run -it --rm --name es830  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v strace_data:/strace_data DIO_ES_IMAGE_OMITTED strace
+
+                li <strong>DIO</strong>:
+                xmp docker run -it --rm --name es830  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -v /tmp/dio/:/tmp/dio/ -e CORRELATE_PATHS=true -e ES_URL=<DIO_ES_URL>:<DIO_ES_PORT>  DIO_ES_IMAGE_OMITTED dio --target_paths /usr/share/elasticsearch-8.3.0-SNAPSHOT
+
+        li <strong>Run Elasticsearch benchmark</strong>:
+        ul
+            li
+                xmp docker run --rm  --net=host elastic/rally race --track=geonames  --pipeline=benchmark-only --target-hosts=localhost:9200

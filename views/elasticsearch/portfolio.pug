@@ -1,0 +1,51 @@
+extends ../layout.pug
+
+block navbar-options
+    li.nav-item
+        a.nav-link(href='/elasticsearch') Description
+    li.nav-item
+        a.nav-link(href='/elasticsearch/how2run') How to reproduce
+    li.nav-item.active
+        a.nav-link(href='/elasticsearch/portfolio') Portfolio
+
+block content
+    h2(style='text-align: center;') Elasticsearch use case
+    .row
+        .col-xs-6
+            h4 Portfolio
+        .col-xs-6
+            .info
+                i.fa.fa-info-circle
+                span.extra-info
+                    | Click on an image for more details
+
+    // First Photo Grid
+    .w3-row-padding.w3-padding-16.w3-center
+        .w3-third
+            img.specImage(src='/image/elasticsearch/stats.png' alt='System overview' style='width:100%')
+            h3.specTitle System overview
+            p.specDescription Generic statistics about the application execution
+            .specExplanation
+                p
+                    | Elasticsearch issued about 1 million storage system calls, most of which were <code>write</code> syscalls (71%).
+                    | <br>Besides the <code>write</code> operations, Elasticsearch also issued <code>read</code>, <code>seek</code>, <code>stat</code>, <code>fsync</code>, <code>close</code>, <code>unlink</code>, <code>rename</code> and <code>readlink</code> operations (including several variants of each system call) .
+                    | <br>Moreover, the Elasticsearch application spawned 42 processes and 118 threads, and accessed almost 4000 different file paths.
+        .w3-third
+            img.specImage(src='/image/elasticsearch/file_path_accesses.png' alt='System overview' style='width:100%')
+            h3.specTitle File path accesses
+            p.specDescription Shows the application file accesses over time
+            .specExplanation
+                p
+                    | Some files exhibit a constant access pattern, even in the absence of client requests.
+                    | <br>Every <code>30</code> seconds Elasticsearch submits <code>2</code> syscalls to the <code>node.lock</code> file (blue line).
+                    | <br>Every <code>2</code> minutes, <code>10</code> syscalls to <code>.es_temp_file</code> file (pink line).
+        .w3-third
+            img.specImage(src='/image/elasticsearch/es_temp_file_nano.png' alt='System overview' style='width:100%')
+            h3.specTitle File path accesses for .es_temp_file
+            p.specDescription Show the application file accesses over time for the .es_temp_file file (nanosecond time interval)
+            .specExplanation
+                p
+                    | Elasticsearch always performs the same sequecence of syscalls:
+                    | <code>lstat→openat→write→openat→fsync→close→close→lstat→unlink</code>.
+                    | <br>The system call with higher execution time is <code>fsync</code> (blue bar).
+                    | <br>There is a duplication of <code>openat</code> and <code>close</code> syscalls.

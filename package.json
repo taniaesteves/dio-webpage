@@ -1,0 +1,23 @@
+{
+  "name": "dio-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "build": "netlify-lambda build express",
+    "start": "node server-local.js",
+    "pug": "node node_modules/pug-cli/index.js views/ --out ./public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.2.1",
+    "express": "^4.18.2",
+    "modules": "^0.4.0",
+    "netlify-lambda": "^2.0.15",
+    "pug": "^3.0.2",
+    "pug-cli": "^1.0.0-alpha6",
+    "serverless-http": "^3.1.0"
+  }
+}

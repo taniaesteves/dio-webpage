@@ -28,10 +28,10 @@ block content
 
     h5 Diagnosis
     p
-        | By using DIO to observe the syscalls submitted over time by different RocskDB thread groups, one can identify <strong>performance contention</strong>.
+        | By using DIO to observe the system calls submitted over time by different RocskDB thread groups, one can identify <strong>performance contention</strong>.
         | Namely, as shown in Figure 2 by the highlighted
         span(style="color: #c00000")  red boxes
-        | , when multiple compaction threads submit I/O requests, the number of syscalls of <em>db_bench</em> threads decreases, causing an immediate tail latency spike perceived by clients (
+        | , when multiple compaction threads submit I/O requests, the number of system calls of <em>db_bench</em> threads decreases, causing an immediate tail latency spike perceived by clients (
         span.blackcircle 1
         | &
         span.blackcircle 2
@@ -45,7 +45,7 @@ block content
         | ).
 
     img(src="/image/rocksdb/rocksdb.png", alt="", style="width: 70%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
-    p(style="text-align: center") <em>Figure 2. Syscalls issued by RocksDB over time, aggregated by thread name. <br>db_bench includes the 8 client threads, rocksdb:low[0-6] refers to each compaction thread, and rocksdb:high0 refers to the flush thread</em>
+    p(style="text-align: center") <em>Figure 2. System calls issued by RocksDB over time, aggregated by thread name. <br>db_bench includes the 8 client threads, rocksdb:low[0-6] refers to each compaction thread, and rocksdb:high0 refers to the flush thread</em>
 
     h5 Explanation
     p

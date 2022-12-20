@@ -40,7 +40,7 @@ block content
                 span.blackcircle 2
                 |).
             li
-                | Later, <code>app</code> removes the file with the <code>unlink</code> syscall(
+                | Later, <code>app</code> removes the file with the <code>unlink</code> sytem call(
                 span.blackcircle 3
                 |).
             li
@@ -52,7 +52,7 @@ block content
                 span.blackcircle 5
                 |).
             li
-                | By starting at the wrong offset, the <code>read</code> syscall returns <code>zero</code> bytes and <strong>the 16 bytes written by <code>app</code> are lost</strong>.
+                | By starting at the wrong offset, the <code>read</code> sytem call returns <code>zero</code> bytes and <strong>the 16 bytes written by <code>app</code> are lost</strong>.
 
     img(src="/image/fluentbit/FluentBit.png", alt="", style="width: 50%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 1. Fluent Bit erroneous access pattern leading to data loss.</em>
@@ -81,4 +81,4 @@ block content
     //-     With the suggested fix redundant <code>open</code> and <code>close</code> operations are avoided, along with the need for using <code>lseek</code> before every write operation. Also, <code>writev</code> is now used to write log lines, instead of <code>write</code>.
 
     //- img(src="/image/redis/redis-new.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
-    //- p(style="text-align: center") <em>Figure 2. Log file access pattern, depicting syscalls issued over time (v2)</em>
+    //- p(style="text-align: center") <em>Figure 2. Log file access pattern, depicting sytem calls issued over time (v2)</em>

@@ -25,11 +25,11 @@ block content
 
     h5 Diagnosis
     p
-        | Using DIO to observe I/O access patterns for the log file, we can see the same set of syscalls being done repeatedly, with a sequential access pattern (i.e., the offset increases for each set of operations). Further analysing this pattern, we can see the exact order of requests for one of these sets:
+        | Using DIO to observe I/O access patterns for the log file, we can see the same set of system calls being done repeatedly, with a sequential access pattern (i.e., the offset increases for each set of operations). Further analysing this pattern, we can see the exact order of requests for one of these sets:
         | <code>openat→lseek→fstat→write→close</code>.
 
     img(src="/image/redis/redis-old.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
-    p(style="text-align: center") <em>Figure 1. Log file access pattern, depicting syscalls issued over time (V1)</em>
+    p(style="text-align: center") <em>Figure 1. Log file access pattern, depicting system calls issued over time (V1)</em>
 
     h5 Solution
     p
@@ -44,4 +44,4 @@ block content
         | With the suggested fix, redundant <code>open</code> and <code>close</code> operations are avoided, along with the need for using <code>lseek</code> before every write operation. Also, <code>writev</code> is now used to write log lines, instead of <code>write</code>.
 
     img(src="/image/redis/redis-new.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
-    p(style="text-align: center") <em>Figure 2. Log file access pattern, depicting syscalls issued over time (v2)</em>
+    p(style="text-align: center") <em>Figure 2. Log file access pattern, depicting system calls issued over time (v2)</em>

@@ -23,7 +23,7 @@ block content
 
     ul
         li <strong>Source code:</strong>
-            a(href='https://github.com/fluent/fluent-bit.git', style='color: blue;')  https://github.com/fluent/fluent-bit.git
+            a(href='https://github.com/fluent/fluent-bit.git', style='color: blue;', target='_blank')  https://github.com/fluent/fluent-bit.git
         li <strong>Commit:</strong> e6506b7b5364c77bec186d94e51c4b3b51e6fbac
         li <strong>Env Configurations (mounting a new file system):</strong>
             pre.codesnippet.
@@ -77,17 +77,20 @@ block content
 
     h5 Docker images
     ul
-        li <strong>Docker image:</strong>
-            a(href='#URL_OMITTED', style='color: blue;')  DIO_FB_IMAGE_OMITTED (omitted due to double blind review)
+        li <strong>Image:</strong> 
+            a(href='https://hub.docker.com/r/taniaesteves/dio-fluentbit', style='color: blue;', target='_blank') taniaesteves/dio-fluentbit
+            ul 
+                li TAG "v1.4.0" - Fluent Bit v1.4.0 with the erroneous access pattern
+                li TAG "v2.0.5" - Fluent Bit v2.0.5 with the correct access pattern
         li <strong>Run test:</strong>
             ul
                 li <strong>Vanilla</strong>:
-                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ DIO_FB_IMAGE_OMITTED
+                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ taniaesteves/dio-fluentbit:v1.4.0
 
 
                 li <strong>strace</strong>:
-                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v strace_data:/strace_data DIO_FB_IMAGE_OMITTED strace
+                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v strace_data:/strace_data taniaesteves/dio-fluentbit:v1.4.0 strace
 
 
                 li <strong>DIO</strong>:
-                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -v /tmp/dio/:/tmp/dio/ -e CORRELATE_PATHS=true -e ES_URL=<DIO_ES_URL>:<DIO_ES_PORT>  DIO_FB_IMAGE_OMITTED dio
+                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -v /tmp/dio/:/tmp/dio/ -e CORRELATE_PATHS=true -e ES_URL=<DIO_ES_URL>:<DIO_ES_PORT>  taniaesteves/dio-fluentbit:v1.4.0 dio

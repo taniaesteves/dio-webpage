@@ -33,26 +33,26 @@ html
 					p A tool for diagnosing applications I/O behavior
 					li(class=path=='/'?'active':undefined)
 						a(href='/') Home
-					//- li(class=path=='/usage'?'active':undefined)
-					//- 	a(href='/usage') How to use
+					li(class=path=='usage'?'active':undefined)
+						a(href='usage') How to use
 					li#usecases-menu
-						a.dropdown-toggle(href='#usecasesMenu' data-toggle='collapse' aria-expanded=usecase=='true'?'true':'false') Use cases
-					ul#usecasesMenu.collapse.list-unstyled(class=usecase=='true'?'show':'')
-						li(class=path=="redis"?'active':undefined)
-							a(href='/redis') Redis
-						li(class=path=="elasticsearch"?'active':undefined)
-							a(href='/elasticsearch') Elasticsearch
-						li(class=path=="rocksdb"?'active':undefined)
-							a(href='/rocksdb') RocksDB
+						a.dropdown-toggle(href='#usecasesMenu' data-toggle='collapse' aria-expanded='false') Use cases
+					ul#usecasesMenu.collapse.list-unstyled(class='show')
+						//- li(class=path=="redis"?'active':undefined)
+						//- 	a(href='/redis') Redis
+						//- li(class=path=="elasticsearch"?'active':undefined)
+						//- 	a(href='/elasticsearch') Elasticsearch
 						li(class=path=="fluentbit"?'active':undefined)
 							a(href='/fluentbit') Fluent Bit
+						li(class=path=="rocksdb"?'active':undefined)
+							a(href='/rocksdb') RocksDB
 					//- li(class=path=="faq"?'active':undefined)
 					//- 	a(href='/faq') FAQ
-					//- li(class=path=="contact"?'active':undefined)
-					//- 	a(href='/contact') Contact
+					li(class=path=="contact"?'active':undefined)
+						a(href='/contact') Contacts
 				ul.list-unstyled.CTAs
 					li
-						a(href='#omitted')
+						a(href='https://github.com/dsrhaslab/dio' target='_blank')
 							i.fab.fa-github(style='font-size:28px')
 							|  GitHub
 
@@ -63,8 +63,6 @@ html
 							span
 							span
 							span
-						button.btn.btn-dark.d-inline-block.d-lg-none.ml-auto(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
-							i.fas.fa-align-justify
 						ul.nav.navbar-nav.ml-auto
 							block navbar-options
 

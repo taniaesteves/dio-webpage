@@ -23,7 +23,7 @@ block content
 
     ul
         li <strong>Source code:</strong>
-            a(href='https://github.com/facebook/rocksdb', style='color: blue;')  https://github.com/facebook/rocksdb
+            a(href='https://github.com/facebook/rocksdb', target='_blank', style='color: blue;')  https://github.com/facebook/rocksdb
         li <strong>Version:</strong> 5.17.2
         li <strong>Congigurations:</strong>
             ul
@@ -64,20 +64,20 @@ block content
     h5 Docker images
     ul
         li <strong>Docker image:</strong>
-            a(href='#URL_OMITTED', style='color: blue;')  DIO_ROCKSDB_IMAGE_OMITTED (omitted due to double blind review)
+            a(href='https://hub.docker.com/r/taniaesteves/dio-rocksdb', style='color: blue;', target='_blank')  taniaesteves/dio-rocksdb:v5.17.2
         li <strong>Load databae:</strong>
         ul
             li
-                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 DIO_ROCKSDB_IMAGE_OMITTED load
+                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 taniaesteves/dio-rocksdb:v5.17.2 load
         li <strong>Run db_bench (YCSB A):</strong>
             ul
                 li <strong>Vanilla</strong>:
-                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ --device-write-bps /dev/sda:200mb --memory=1G -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 DIO_ROCKSDB_IMAGE_OMITTED ycsbwa
+                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ --device-write-bps /dev/sda:200mb --memory=1G -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 taniaesteves/dio-rocksdb:v5.17.2 ycsbwa
 
 
                 li <strong>strace</strong>:
-                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ --device-write-bps /dev/sda:200mb --memory=1G -v strace_data:/strace_data -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 DIO_ROCKSDB_IMAGE_OMITTED strace ycsbwa
+                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ --device-write-bps /dev/sda:200mb --memory=1G -v strace_data:/strace_data -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 taniaesteves/dio-rocksdb:v5.17.2 strace ycsbwa
 
 
                 li <strong>DIO</strong>:
-                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ --device-write-bps /dev/sda:200mb --memory=1G -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 DIO_ROCKSDB_IMAGE_OMITTED dio ycsbwa
+                xmp docker run -it --rm --name rocksdb  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ --device-write-bps /dev/sda:200mb --memory=1G -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -v rocksdb_data/kvstore:/rocksdb/test/kvstore -v rocksdb_data/results:/rocksdb/test/results -e ROCKSDB_LOAD=100000000 -e DB_BENCH_OPS=100000000 taniaesteves/dio-rocksdb:v5.17.2 dio ycsbwa

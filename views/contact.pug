@@ -2,25 +2,42 @@ extends layout.pug
 
 block navbar-options
     li.nav-item.active
-        a.nav-link(href='#group') Group
-    li.nav-item
-        a.nav-link(href='#github') GitHub
+        a.nav-link(href='/') Home
 
 block content
-    h2#installation Contacts
-    //- p
-    //-     | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-    //- h4#group Distributed storage research @ HASLab
-    //- p
-    //-     | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    h1#contact Contacts
 
-    //- .wrapperSites
-    //-     a.icon.website(href='https://dsr-haslab.github.io')
-    //-         .tooltip Website
-    //-         span
-    //-             i.fas.fa-light.fa-globe
-    //-     a.icon.github(href='https://github.com/dsrhaslab')
-    //-         .tooltip GitHub
-    //-         span
-    //-             i.fab.fa-github
+    p This project was developed by the Distributed Storage Research Group @ HASLab, INESC TEC.
+
+    h4#authors Contributors
+
+    ul
+        li
+            p Tânia Esteves - 
+                a.link(href='mailto:tania.c.araujo@inesctec.pt', target="_blank") tania.c.araujo@inesctec.pt
+        li
+            p Ricardo Macedo - 
+                a.link(href='mailto:rgmacedo@inesctec.pt') rgmacedo@inesctec.pt
+
+        li
+            p Rui Oliveira - 
+                a.link(href='mailto:rui.oliveira@inesctec.pt') rui.oliveira@inesctec.pt
+
+        li
+            p João Paulo - 
+                a.link(href='mailto:jtpaulo@inesctec.pt') jtpaulo@inesctec.pt
+
+    p
+        | Please contact us with any questions.
+
+
+    .wrapperSites
+        a.icon.website(href='https://dsr-haslab.github.io')
+            .tooltip Website
+            span
+                i.fas.fa-light.fa-globe
+        a.icon.github(href='https://github.com/dsrhaslab')
+            .tooltip GitHub
+            span
+                i.fab.fa-github

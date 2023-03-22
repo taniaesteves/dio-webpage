@@ -15,15 +15,15 @@ app.get('/', (req, res) => {
 });
 
 // Route Files.
-let redis = require('./routes/redis');
-let elasticsearch = require('./routes/elasticsearch');
+// let redis = require('./routes/redis');
+// let elasticsearch = require('./routes/elasticsearch');
 let rocksdb = require('./routes/rocksdb');
 let fluentbit = require('./routes/fluentbit');
 let usage = require('./routes/usage');
 let faq = require('./routes/faq');
 let contact = require('./routes/contact');
-app.use('/redis', redis);
-app.use('/elasticsearch', elasticsearch);
+// app.use('/redis', redis);
+// app.use('/elasticsearch', elasticsearch);
 app.use('/rocksdb', rocksdb);
 app.use('/fluentbit', fluentbit);
 app.use('/usage', usage);

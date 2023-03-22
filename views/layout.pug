@@ -42,7 +42,7 @@ html
 						//- 	a(href='/redis') Redis
 						//- li(class=path=="elasticsearch"?'active':undefined)
 						//- 	a(href='/elasticsearch') Elasticsearch
-						li(class=path=="fluentbit"?'active':undefined)
+						li(class=path(class="<%= === 'fluentbit' && 'active' %>"))
 							a(href='/fluentbit') Fluent Bit
 						li(class=path=="rocksdb"?'active':undefined)
 							a(href='/rocksdb') RocksDB

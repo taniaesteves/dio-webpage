@@ -1,12 +1,14 @@
-extends ../layout.pug
+extends ../../layout.pug
 
 block navbar-options
-    li.nav-item
-        a.nav-link(href='/elasticsearch') Description
-    li.nav-item
-        a.nav-link(href='/elasticsearch/how2run') How to reproduce
     li.nav-item.active
-        a.nav-link(href='/elasticsearch/portfolio') Portfolio
+        a.nav-link(href='/') Home
+    li.nav-item
+        a.nav-link(href='/use-cases/elasticsearch') Description
+    li.nav-item
+        a.nav-link(href='/use-cases/elasticsearch/how2run') How to reproduce
+    li.nav-item.active
+        a.nav-link(href='/use-cases/elasticsearch/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') Elasticsearch use case
@@ -22,7 +24,7 @@ block content
     // First Photo Grid
     .w3-row-padding.w3-padding-16.w3-center
         .w3-third
-            img.specImage(src='/image/elasticsearch/stats.png' style='width:100%')
+            img.specImage(src='/image/use-cases/elasticsearch/stats.png' style='width:100%')
             h3.specTitle System overview
             p.specDescription Generic statistics about the application execution
             .specExplanation
@@ -31,14 +33,14 @@ block content
                     | <br>Besides the <code>write</code> operations, Elasticsearch also issued <code>read</code>, <code>seek</code>, <code>stat</code>, <code>fsync</code>, <code>close</code>, <code>unlink</code>, <code>rename</code> and <code>readlink</code> operations (including several variants of each system call) .
                     | <br>Moreover, the Elasticsearch application spawned 42 processes and 118 threads, and accessed almost 4000 different file paths.
         .w3-third
-            img.specImage(src='/image/elasticsearch/data_vs_meta.png' style='width:100%')
+            img.specImage(src='/image/use-cases/elasticsearch/data_vs_meta.png' style='width:100%')
             h3.specTitle Percentage of data vs metadata
             p.specDescription Shows the percentage of data and metadata-related system calls
             .specExplanation
                 p
                     | The majority of system calls issued by Elasticsearch were <code>data-related</code> (<code>88%</code>).
         .w3-third
-            img.specImage(src='/image/elasticsearch/exec_time.png' style='width:100%')
+            img.specImage(src='/image/use-cases/elasticsearch/exec_time.png' style='width:100%')
             h3.specTitle Execution time per system call
             p.specDescription Shows the average execution time for the top 5 system calls
             .specExplanation
@@ -48,7 +50,7 @@ block content
                     | <br>The average execution time of the <code>unlink</code> system call was <code>0,43</code> milliseconds.
     .w3-row-padding.w3-padding-16.w3-center
         .w3-third
-            img.specImage(src='/image/elasticsearch/file_types.png' style='width:100%')
+            img.specImage(src='/image/use-cases/elasticsearch/file_types.png' style='width:100%')
             h3.specTitle Top file types
             p.specDescription Shows the type of files accessed by the application and the number of system calls issued for each file type
             .specExplanation
@@ -56,7 +58,7 @@ block content
                     | Elasticsearch accessed two types of files: <code>regular files</code> and <code>directories</code>.
                     | <br>The majority of the system calls were issued to <code>regular files</code> (about 1 million).
         .w3-third
-            img.specImage(src='/image/elasticsearch/file_path_accesses.png' style='width:100%')
+            img.specImage(src='/image/use-cases/elasticsearch/file_path_accesses.png' style='width:100%')
             h3.specTitle File path accesses
             p.specDescription Shows the application file accesses over time
             .specExplanation
@@ -65,7 +67,7 @@ block content
                     | <br>Every <code>30</code> seconds Elasticsearch submits <code>2</code> system calls to the <code>node.lock</code> file (blue line).
                     | <br>Every <code>2</code> minutes, <code>10</code> system calls to <code>.es_temp_file</code> file (pink line).
         .w3-third
-            img.specImage(src='/image/elasticsearch/es_temp_file_nano.png' style='width:100%')
+            img.specImage(src='/image/use-cases/elasticsearch/es_temp_file_nano.png' style='width:100%')
             h3.specTitle File path accesses for .es_temp_file
             p.specDescription Show the application file accesses over time for the .es_temp_file file (nanosecond time interval)
             .specExplanation

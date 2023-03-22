@@ -34,18 +34,18 @@ html
 					li#nav-item-home
 						a(href='/') Home
 					li#nav-item-usage
-						a(href='usage') How to use
+						a(href='/usage') How to use
 					li#usecases-menu
 						a.dropdown-toggle(href='#usecasesMenu' data-toggle='collapse' aria-expanded='false') Use cases
 					ul#usecasesMenu.collapse.list-unstyled(class='show')
 						//- li(class=path=="redis"?'active':undefined)
-						//- 	a(href='/redis') Redis
+						//- 	a(href='/use-cases/redis') Redis
 						//- li(class=path=="elasticsearch"?'active':undefined)
-						//- 	a(href='/elasticsearch') Elasticsearch
+						//- 	a(href='/use-cases/elasticsearch') Elasticsearch
 						li#nav-item-fluentbit
-							a(href='/fluentbit') Fluent Bit
+							a(href='/use-cases/fluentbit') Fluent Bit
 						li#nav-item-rocksdb
-							a(href='/rocksdb') RocksDB
+							a(href='/use-cases/rocksdb') RocksDB
 					//- li(class=path=="faq"?'active':undefined)
 					//- 	a(href='/faq') FAQ
 					li#nav-item-contacts

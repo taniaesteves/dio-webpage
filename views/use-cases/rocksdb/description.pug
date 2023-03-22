@@ -1,12 +1,14 @@
-extends layout.pug
+extends ../../layout.pug
 
 block navbar-options
     li.nav-item.active
-        a.nav-link(href='/rocksdb') Description
+        a.nav-link(href='/') Home
+    li.nav-item.active
+        a.nav-link(href='/use-cases/rocksdb') Description
     li.nav-item
-        a.nav-link(href='/rocksdb/how2run') How to reproduce
+        a.nav-link(href='/use-cases/rocksdb/how2run') How to reproduce
     li.nav-item
-        a.nav-link(href='/rocksdb/portfolio') Portfolio
+        a.nav-link(href='/use-cases/rocksdb/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') RocksDB use case
@@ -14,15 +16,15 @@ block content
     p
         | This use case aims at identifying the root cause for high tail latency at client requests issued to RocksDB.
         | <br>The instructions to reproduce the use case are available at
-        a(href='/rocksdb/how2run', target='_self', style='color: blue;')  how to reproduce
+        a(href='/use-cases/rocksdb/how2run', target='_self', style='color: blue;')  how to reproduce
         | , while an extendend set of visualizations provided by DIO are available at
-        a(href='/rocksdb/portfolio', target='_self', style='color: blue;')  portfolio.
+        a(href='/use-cases/rocksdb/portfolio', target='_self', style='color: blue;')  portfolio.
 
     h5 Problem
     p
         | As shown in Figure 1, RocksDB suffers from <strong>high tail latencies</strong>, where clients observe several latency spikes (e.g., ranging between <code>1.5</code> ms to <code>3.5</code> ms).
 
-    img(src="/image/rocksdb/rocksdb_latency99th.png", alt="", style="width: 40%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    img(src="/image/use-cases/rocksdb/rocksdb_latency99th.png", alt="", style="width: 40%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 1. 99th percentile latency for RocksDB client operations.</em>
 
 
@@ -44,7 +46,7 @@ block content
         span.blackcircle 4
         | ).
 
-    img(src="/image/rocksdb/rocksdb.png", alt="", style="width: 70%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    img(src="/image/use-cases/rocksdb/rocksdb.png", alt="", style="width: 70%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 2. System calls issued by RocksDB over time, aggregated by thread name. <br>db_bench includes the 8 client threads, rocksdb:low[0-6] refers to each compaction thread, and rocksdb:high0 refers to the flush thread</em>
 
     h5 Explanation

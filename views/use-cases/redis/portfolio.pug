@@ -1,12 +1,14 @@
-extends ../layout.pug
+extends ../../layout.pug
 
 block navbar-options
-    li.nav-item
-        a.nav-link(href='/redis') Description
-    li.nav-item
-        a.nav-link(href='/redis/how2run') How to reproduce
     li.nav-item.active
-        a.nav-link(href='/redis/portfolio') Portfolio
+        a.nav-link(href='/') Home
+    li.nav-item
+        a.nav-link(href='/use-cases/redis') Description
+    li.nav-item
+        a.nav-link(href='/use-cases/redis/how2run') How to reproduce
+    li.nav-item.active
+        a.nav-link(href='/use-cases/redis/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') Redis use case
@@ -25,14 +27,14 @@ block content
     p Generic statistics about the application execution
     .w3-row-padding.w3-padding-16.w3-center
         .w3-half
-            img.specImage(src='/image/redis/old-version/stats.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/old-version/stats.png' style='width:100%')
             .specExplanation
                 p
                     | Redis (v1) issued about 1 million storage system calls, most of which were <code>write</code> system calls.
                     | <br>Besides the <code>write</code> system calls, Redis also issued the following system calls: <code>openat</code>, <code>close</code>, <code>fstat</code>, <code>lseek</code>, <code>read</code> and <code>fsync</code>.
                     | <br>Moreover, the Redis application spawned 24 processes and accessed 25 different file paths.
         .w3-half
-            img.specImage(src='/image/redis/new-version/stats.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/new-version/stats.png' style='width:100%')
             .specExplanation
                 p
                     | Redis (v2) issued about 1 million storage system calls, most of which were <code>write</code> system calls.
@@ -44,11 +46,11 @@ block content
     p Shows the type of files accessed by the application and the number of system calls issued for each file type
     .w3-row-padding.w3-padding-16.w3-center
         .w3-half
-            img.specImage(src='/image/redis/old-version/top_file_types.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/old-version/top_file_types.png' style='width:100%')
             .specExplanation
                 p Redis (v1) issued about 1 million storage system calls to <code>regular files</code>, most of which were <code>write</code> system calls.
         .w3-half
-            img.specImage(src='/image/redis/new-version/top_file_types.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/new-version/top_file_types.png' style='width:100%')
             .specExplanation
                 p Redis (v2) issued about 1 million storage system calls to <code>regular files</code>, most of which were <code>write</code> system calls.
 
@@ -57,16 +59,16 @@ block content
     p Shows the top 10 file paths accessed by the application and the number of system calls issued for each file path
     .w3-row-padding.w3-padding-16.w3-center
         .w3-half
-            img.specImage(src='/image/redis/old-version/top_file_paths.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/old-version/top_file_paths.png' style='width:100%')
             .specExplanation
                 p
-                    | The most accessed file path by Redis (v1) was <code>/redis/redis/src/temp-4022198.rdb</code>, which was accessed more than 70,000 times, mostly for <code>write</code> system calls.
+                    | The most accessed file path by Redis (v1) was <code>/use-cases/redis/redis/src/temp-4022198.rdb</code>, which was accessed more than 70,000 times, mostly for <code>write</code> system calls.
                     | <br>All the top 10 file paths have the same file extension: <code>.rdb</code>.
         .w3-half
-            img.specImage(src='/image/redis/new-version/top_file_paths.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/new-version/top_file_paths.png' style='width:100%')
             .specExplanation
                 p
-                    | The most accessed file path by Redis (v2) was <code>/redis/redis/src/temp-4053855.rdb</code>, which was accessed more than 70,000 times, mostly for <code>write</code> system calls.
+                    | The most accessed file path by Redis (v2) was <code>/use-cases/redis/redis/src/temp-4053855.rdb</code>, which was accessed more than 70,000 times, mostly for <code>write</code> system calls.
                     | <br>All the top 10 file paths have the same file extension: <code>.rdb</code>.
 
     br
@@ -74,12 +76,12 @@ block content
     p Shows the number of <code>open</code> and <code>close</code> operations issued for each file path (top 5)
     .w3-row-padding.w3-padding-16.w3-center
         .w3-half
-            img.specImage(src='/image/redis/old-version/open_vs_close.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/old-version/open_vs_close.png' style='width:100%')
             .specExplanation
                 p
                     | The file path with more <code>open</code> and <code>close</code> operations was the Redis log file (<code>/dio_data/redis.log</code>), which was opened/closed more than 3,000 times.
         .w3-half
-            img.specImage(src='/image/redis/new-version/open_vs_close.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/new-version/open_vs_close.png' style='width:100%')
             .specExplanation
                 p
                     | Redis (v2) only performed 1 <code>open</code> and 1 <code>close</code> operation for each file.
@@ -90,12 +92,12 @@ block content
     p Shows the application file accesses over time
     .w3-row-padding.w3-padding-16.w3-center
         .w3-half
-            img.specImage(src='/image/redis/old-version/top_file_accesses.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/old-version/top_file_accesses.png' style='width:100%')
             .specExplanation
                 p
                     | The most accessed files over time are <code>.rdb</code> files, which are the Redis database files.
         .w3-half
-            img.specImage(src='/image/redis/new-version/top_file_accesses.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/new-version/top_file_accesses.png' style='width:100%')
             .specExplanation
                 p
                     | The most accessed files over time are <code>.rdb</code> files, which are the Redis database files.
@@ -105,7 +107,7 @@ block content
     p Shows the application accesses to the log file over time
     .w3-row-padding.w3-padding-16.w3-center
         .w3-half
-            img.specImage(src='/image/redis/old-all.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/old-all.png' style='width:100%')
             //- h3.specTitle Log file access pattern (v1) (v1)
             //- p.specDescription Generic statistics about the execution
             .specExplanation
@@ -113,7 +115,7 @@ block content
                     | Redis (v1) issues the same set of system calls (<code>openat, lseek, fstat, write, close</code>) repeatedly over time, with a sequential file access pattern (i.e., the offset increases for each set of operations).
                     | <br>The maximum number of system calls issued per minute was 650.
         .w3-half
-            img.specImage(src='/image/redis/new-all.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/new-all.png' style='width:100%')
             //- h3.specTitle Log file access pattern (v1) (v2)
             //- p.specDescription Generic statistics about the execution
             .specExplanation
@@ -128,14 +130,14 @@ block content
     p Shows the exact order of the system calls issued for the log file (in microseconds)
     .w3-row-padding.w3-padding-16.w3-center
         .w3-half
-            img.specImage(src='/image/redis/old-nano.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/old-nano.png' style='width:100%')
             .specExplanation
                 p
                     | Redis (v1) executes always the same sequence of system calls: <code>openat→lseek→fstat→write→close</code>.
                     | <br>The system calls with higher execution times are <code>openat</code> and <code>write</code>.
 
         .w3-half
-            img.specImage(src='/image/redis/new-nano.png' style='width:100%')
+            img.specImage(src='/image/use-cases/redis/new-nano.png' style='width:100%')
             .specExplanation
                 p
                     | Redis (v2) only performs one type os system calls: <code>writev</code>.

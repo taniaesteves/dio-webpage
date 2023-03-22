@@ -1,23 +1,25 @@
-extends layout.pug
+extends ../../layout.pug
 
 block navbar-options
     li.nav-item.active
-        a.nav-link(href='/redis') Description
+        a.nav-link(href='/') Home
+    li.nav-item.active
+        a.nav-link(href='/use-cases/redis') Description
     li.nav-item
-        a.nav-link(href='/redis/how2run') How to reproduce
+        a.nav-link(href='/use-cases/redis/how2run') How to reproduce
     li.nav-item
-        a.nav-link(href='/redis/portfolio') Portfolio
+        a.nav-link(href='/use-cases/redis/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') Redis use case
 
     p
         | This use case considers the diagnosis of an issue identified in the Redis in-memory data store
-        a(href='https://github.com/redis/redis/pull/10531', target='_blank', style='color: blue;')  (see pull request #10531).
+        a(href='https://github.com/use-cases/redis/redis/pull/10531', target='_blank', style='color: blue;')  (see pull request #10531).
         | <br>The instructions to reproduce the use case are available at
-        a(href='/redis/how2run', target='_blank', style='color: blue;')  how to reproduce
+        a(href='/use-cases/redis/how2run', target='_blank', style='color: blue;')  how to reproduce
         | , while an extendend set of visualizations provided by DIO are available at
-        a(href='/redis/portfolio', target='_blank', style='color: blue;')  portfolio.
+        a(href='/use-cases/redis/portfolio', target='_blank', style='color: blue;')  portfolio.
 
     h5 Problem
     p
@@ -28,7 +30,7 @@ block content
         | Using DIO to observe I/O access patterns for the log file, we can see the same set of system calls being done repeatedly, with a sequential access pattern (i.e., the offset increases for each set of operations). Further analysing this pattern, we can see the exact order of requests for one of these sets:
         | <code>openat→lseek→fstat→write→close</code>.
 
-    img(src="/image/redis/redis-old.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    img(src="/image/use-cases/redis/redis-old.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 1. Log file access pattern, depicting system calls issued over time (V1)</em>
 
     h5 Solution
@@ -43,5 +45,5 @@ block content
         | Using DIO, we are also able to validate the proposed solution by observing the new access pattern for the log file.
         | With the suggested fix, redundant <code>open</code> and <code>close</code> operations are avoided, along with the need for using <code>lseek</code> before every write operation. Also, <code>writev</code> is now used to write log lines, instead of <code>write</code>.
 
-    img(src="/image/redis/redis-new.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    img(src="/image/use-cases/redis/redis-new.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 2. Log file access pattern, depicting system calls issued over time (v2)</em>

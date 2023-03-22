@@ -1,12 +1,14 @@
-extends ../layout.pug
+extends ../../layout.pug
 
 block navbar-options
-    li.nav-item
-        a.nav-link(href='/fluentbit') Description
-    li.nav-item
-        a.nav-link(href='/fluentbit/how2run') How to reproduce
     li.nav-item.active
-        a.nav-link(href='/fluentbit/portfolio') Portfolio
+        a.nav-link(href='/') Home
+    li.nav-item
+        a.nav-link(href='/use-cases/fluentbit') Description
+    li.nav-item
+        a.nav-link(href='/use-cases/fluentbit/how2run') How to reproduce
+    li.nav-item.active
+        a.nav-link(href='/use-cases/fluentbit/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') Fluent Bit use case
@@ -22,7 +24,7 @@ block content
     // First Photo Grid
     .w3-row-padding.w3-padding-16.w3-center
         .w3-third
-            img.specImage(src='/image/fluentbit/stats.png' style='width:100%')
+            img.specImage(src='/image/use-cases/fluentbit/stats.png' style='width:100%')
             h3.specTitle System overview
             p.specDescription Generic statistics about the application execution
             .specExplanation
@@ -30,14 +32,14 @@ block content
                     | <code>fluent-bit</code> and <code>app</code> together issued about 2,000 storage system calls, most of which were <code>read</code> system calls.
                     | <br>In total, <code>6</code> processes and <code>7</code> threads were spawned, and more than <code>500</code> files were accessed.
         .w3-third
-            img.specImage(src='/image/fluentbit/data_meta.png' style='width:100%')
+            img.specImage(src='/image/use-cases/fluentbit/data_meta.png' style='width:100%')
             h3.specTitle Percentage of data vs metadata
             p.specDescription Shows the percentage of data and metadata-related system calls
             .specExplanation
                 p
                     | <code>67%</code> of the system calls were <code>metadata-related</code>, while <code>33%</code> were <code>data-related</code>.
         .w3-third
-            img.specImage(src='/image/fluentbit/exec_time.png' style='width:100%')
+            img.specImage(src='/image/use-cases/fluentbit/exec_time.png' style='width:100%')
             h3.specTitle Execution time per system call
             p.specDescription Shows the average execution time for the top 5 system calls
             .specExplanation
@@ -47,14 +49,14 @@ block content
 
     .w3-row-padding.w3-padding-16.w3-center
         .w3-third
-            img.specImage(src='/image/fluentbit/file_types.png' style='width:100%')
+            img.specImage(src='/image/use-cases/fluentbit/file_types.png' style='width:100%')
             h3.specTitle Top file types
             p.specDescription Shows the type of files accessed by the application and the number of system calls issued for each file type
             .specExplanation
                 p
                     | The top file types accessed during the app execution were: 1600 system calls for <code>Regular files</code>, ~100 system calls for <code>Pipes</code>, and less than 50 system calls for <code>Char devices</code>, <code>Directories</code> and <code>Unknown type</code>.
         .w3-third
-            img.specImage(src='/image/fluentbit/file_per_command.png' style='width:100%')
+            img.specImage(src='/image/use-cases/fluentbit/file_per_command.png' style='width:100%')
             h3.specTitle File accesses per command
             p.specDescription Shows the total number of system calls issued to files by each command
             .specExplanation
@@ -62,7 +64,7 @@ block content
                     | Two files were accessed both by Fluent Bit and the client application: <code>app.log</code> and <code>/dev/pts/0</code>.
                     | <br><code>66%</code> of the system calls were issued to the <code>app.log</code> were made by by Fluent Bit.
         .w3-third
-            img.specImage(src='/image/fluentbit/Fluentbit-table.png' style='width:100%')
+            img.specImage(src='/image/use-cases/fluentbit/Fluentbit-table.png' style='width:100%')
             h3.specTitle File access pattern for app.log file
             p.specDescription Shows the access pattern for the app.log file performed both by Fluent Bit and the client application
             .specExplanation

@@ -1,12 +1,14 @@
-extends ../layout.pug
+extends ../../layout.pug
 
 block navbar-options
-    li.nav-item
-        a.nav-link(href='/elasticsearch') Description
     li.nav-item.active
-        a.nav-link(href='/elasticsearch/how2run') How to reproduce
+        a.nav-link(href='/') Home
     li.nav-item
-        a.nav-link(href='/elasticsearch/portfolio') Portfolio
+        a.nav-link(href='/use-cases/elasticsearch') Description
+    li.nav-item.active
+        a.nav-link(href='/use-cases/elasticsearch/how2run') How to reproduce
+    li.nav-item
+        a.nav-link(href='/use-cases/elasticsearch/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') Elasticsearch use case

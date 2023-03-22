@@ -1,12 +1,14 @@
-extends ../layout.pug
+extends ../../layout.pug
 
 block navbar-options
-    li.nav-item
-        a.nav-link(href='/rocksdb') Description
-    li.nav-item
-        a.nav-link(href='/rocksdb/how2run') How to reproduce
     li.nav-item.active
-        a.nav-link(href='/rocksdb/portfolio') Portfolio
+        a.nav-link(href='/') Home
+    li.nav-item
+        a.nav-link(href='/use-cases/rocksdb') Description
+    li.nav-item
+        a.nav-link(href='/use-cases/rocksdb/how2run') How to reproduce
+    li.nav-item.active
+        a.nav-link(href='/use-cases/rocksdb/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') RocksDB use case
@@ -21,7 +23,7 @@ block content
 
     .w3-row-padding.w3-padding-16.w3-center
         .w3-quarter
-            img#myImg.specImage(src='/image/rocksdb/stats.png' style='width:100%')
+            img#myImg.specImage(src='/image/use-cases/rocksdb/stats.png' style='width:100%')
             h3.specTitle System overview
             p.specDescription Generic statistics about the application execution
             .specExplanation
@@ -30,21 +32,21 @@ block content
                     | <br>Besides the <code>pread64</code> system call, RocksDB also issued <code>write</code>, <code>close</code>, <code>openat</code>, and <code>read</code> system calls.
                     | <br>Moreover, the RocksDB application spawned 2 processes and 33 threads, and accessed more than <code>15,000</code> different file paths.
         .w3-quarter
-            img.specImage(src='/image/rocksdb/data_vs_metadata.png' style='width:100%')
+            img.specImage(src='/image/use-cases/rocksdb/data_vs_metadata.png' style='width:100%')
             h3.specTitle Percentage of data vs metadata
             p.specDescription Shows the percentage of data and metadata-related system calls
             .specExplanation
                 p
                     | The majority of system calls issued by RocksDB were <code>data-related</code> (<code>99.98%</code>).
         .w3-quarter
-            img.specImage(src='/image/rocksdb/top_5_file_types.png' style='width:100%')
+            img.specImage(src='/image/use-cases/rocksdb/top_5_file_types.png' style='width:100%')
             h3.specTitle Top file types
             p.specDescription Shows the type of files accessed by the application and the number of system calls issued for each file type
             .specExplanation
                 p
                     | RocksDB issued more than 450 million storage system calls to <code>regular files</code>, most of which were <code>pread64</code> system calls.
         .w3-quarter
-            img.specImage(src='/image/rocksdb/exec_time_top_syscalls.png' style='width:100%')
+            img.specImage(src='/image/use-cases/rocksdb/exec_time_top_syscalls.png' style='width:100%')
             h3.specTitle Execution time per system call
             p.specDescription Shows the average execution time for the top 5 system calls
             .specExplanation
@@ -56,7 +58,7 @@ block content
 
     .w3-row-padding.w3-padding-16.w3-center
         .w3-quarter
-            img.specImage(src='/image/rocksdb/file_accesses_per_command.png' style='width:100%')
+            img.specImage(src='/image/use-cases/rocksdb/file_accesses_per_command.png' style='width:100%')
             h3.specTitle File accesses per command
             p.specDescription Shows the total number of system calls issued to files by each command
             .specExplanation
@@ -65,7 +67,7 @@ block content
                     | <br>Each background thread (<code>rocksdb:high0</code> and <code>rocksdb:lowX</code>) issued about <code>5,000</code> file accesses.
 
         .w3-quarter
-            img.specImage(src='/image/rocksdb/files_accesses_per_command.png' style='width:100%')
+            img.specImage(src='/image/use-cases/rocksdb/files_accesses_per_command.png' style='width:100%')
             h3.specTitle Percentage of requests per command
             p.specDescription Shows the percentage of requests issued by each command for the top 25 files
             .specExplanation
@@ -73,7 +75,7 @@ block content
                     | The threads belonging to the <code>db_bench</code> process issued more than <code>90%</code> of the requests to the top 25 files.
                     | <br>Morevoer, different files were accessed by different compaction threads (<code>rocksdb:lowX</code>).
         .w3-quarter
-            img.specImage(src='/image/rocksdb/file_accesses_over_time.png' style='width:100%')
+            img.specImage(src='/image/use-cases/rocksdb/file_accesses_over_time.png' style='width:100%')
             h3.specTitle File path accesses
             p.specDescription Shows the application file accesses over time
             .specExplanation
@@ -81,7 +83,7 @@ block content
                     | RocksDB accesses a large number of distinct file paths over time.
                     | <br>The most accessed files over time are <code>.sst</code> files, which are the RocksDB database files.
         .w3-quarter
-            img.specImage(src='/image/rocksdb/all_threads.png' style='width:100%')
+            img.specImage(src='/image/use-cases/rocksdb/all_threads.png' style='width:100%')
             h3.specTitle System calls per command
             p.specDescription Shows the system calls issued over time, aggregated by thread name
             .specExplanation

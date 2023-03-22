@@ -3,15 +3,15 @@ const router = express.Router();
 
 // Get Articles Page
 router.get('/', function(req, res){
-  res.render('rocksdb', {path: 'rocksdb', usecase: 'true'});
+  res.render('use-cases/fluentbit/description');
 });
 
 router.get('/how2run', (req, res) => {
-    res.render('rocksdb/how2run', {path: 'rocksdb', usecase: 'true'});
+    res.render('use-cases/fluentbit/how2run');
 });
 
 router.get('/portfolio', (req, res) => {
-    res.render('rocksdb/portfolio', {path: 'rocksdb', usecase: 'true' });
+    res.render('use-cases/fluentbit/portfolio');
 });
 
 

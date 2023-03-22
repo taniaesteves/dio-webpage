@@ -15,17 +15,17 @@ router.get('/', (req, res) => {
 });
 
 // Other routes.
-router.get('/redis', function(req, res){
-    res.sendFile('redis.html', { root: views });
+// router.get('/use-cases/redis', function(req, res){
+//     res.sendFile('use-cases/redis/redis.html', { root: views });
+// });
+// router.get('/use-cases/elasticsearch', function(req, res){
+//     res.sendFile('elasticsearch/elasticsearch/elasticsearch.html', { root: views });
+// });
+router.get('/use-cases/rocksdb', function(req, res){
+    res.sendFile('use-cases/rocksdb/description.html', { root: views });
 });
-router.get('/elasticsearch', function(req, res){
-    res.sendFile('elasticsearch.html', { root: views });
-});
-router.get('/rocksdb', function(req, res){
-    res.sendFile('rocksdb.html', { root: views });
-});
-router.get('/fluentbit', function(req, res){
-    res.sendFile('fluentbit.html', { root: views });
+router.get('/use-cases/fluentbit', function(req, res){
+    res.sendFile('use-cases/fluentbit/description.html', { root: views });
 });
 router.get('/usage', function(req, res){
     res.sendFile('usage.html', { root: views });

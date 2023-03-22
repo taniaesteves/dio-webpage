@@ -1,22 +1,24 @@
-extends ../layout.pug
+extends ../../layout.pug
 
 block navbar-options
-    li.nav-item
-        a.nav-link(href='/fluentbit') Description
     li.nav-item.active
-        a.nav-link(href='/fluentbit/how2run') How to reproduce
+        a.nav-link(href='/') Home
     li.nav-item
-        a.nav-link(href='/fluentbit/portfolio') Portfolio
+        a.nav-link(href='/use-cases/fluentbit') Description
+    li.nav-item.active
+        a.nav-link(href='/use-cases/fluentbit/how2run') How to reproduce
+    li.nav-item
+        a.nav-link(href='/use-cases/fluentbit/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') Fluent Bit use case
     h4(style='text-align: center;') How to reproduce
 
     p
-        | This page describes how to reproduce the results presented in the paper for three setups:
+        | This page describes how to reproduce the results presented in the paper for two setups:
         ul
             li <strong>Vanilla</strong>: without tracing I/O events
-            li <strong>strace</strong>: tracing system calls with strace
+            //- li <strong>strace</strong>: tracing system calls with strace
             li <strong>DIO</strong>: tracing and analyzing system calls with DIO
 
     h5 Fluent Bit configuration
@@ -24,7 +26,11 @@ block content
     ul
         li <strong>Source code:</strong>
             a(href='https://github.com/fluent/fluent-bit.git', style='color: blue;', target='_blank')  https://github.com/fluent/fluent-bit.git
-        li <strong>Commit:</strong> e6506b7b5364c77bec186d94e51c4b3b51e6fbac
+        li <strong>Commits:</strong> 
+            ul
+                li for the erroneous access patterns: e6506b7b5364c77bec186d94e51c4b3b51e6fbac
+                li for the correct access patterns:   ba2c0d70ab5fb32a10e7b920e0ea821b7fb9b259
+
         li <strong>Env Configurations (mounting a new file system):</strong>
             pre.codesnippet.
                 dd if=/dev/zero of=disk.img bs=1M count=128
@@ -88,8 +94,8 @@ block content
                 xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ taniaesteves/dio-fluentbit:v1.4.0
 
 
-                li <strong>strace</strong>:
-                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v strace_data:/strace_data taniaesteves/dio-fluentbit:v1.4.0 strace
+                //- li <strong>strace</strong>:
+                //- xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v strace_data:/strace_data taniaesteves/dio-fluentbit:v1.4.0 strace
 
 
                 li <strong>DIO</strong>:

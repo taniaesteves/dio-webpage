@@ -1,12 +1,14 @@
-extends layout.pug
+extends ../../layout.pug
 
 block navbar-options
     li.nav-item.active
-        a.nav-link(href='/fluentbit') Description
+        a.nav-link(href='/') Home
+    li.nav-item.active
+        a.nav-link(href='/use-cases/fluentbit') Description
     li.nav-item
-        a.nav-link(href='/fluentbit/how2run') How to reproduce
+        a.nav-link(href='/use-cases/fluentbit/how2run') How to reproduce
     li.nav-item
-        a.nav-link(href='/fluentbit/portfolio') Portfolio
+        a.nav-link(href='/use-cases/fluentbit/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') Fluent Bit use case
@@ -14,9 +16,9 @@ block content
     p
         | This use case considers the diagnosis of a data loss issue identified in the Fluent Bit application.
         | <br>The instructions to reproduce the use case are available at
-        a(href='/fluentbit/how2run', target='_self', style='color: blue;')  how to reproduce
+        a(href='/use-cases/fluentbit/how2run', target='_self', style='color: blue;')  how to reproduce
         | , while an extendend set of visualizations provided by DIO are available at
-        a(href='/fluentbit/portfolio', target='_self', style='color: blue;')  portfolio.
+        a(href='/use-cases/fluentbit/portfolio', target='_self', style='color: blue;')  portfolio.
 
     h5 Problem
     p
@@ -54,7 +56,7 @@ block content
             li
                 | By starting at the wrong offset, the <code>read</code> sytem call returns <code>zero</code> bytes and <strong>the 16 bytes written by <code>app</code> are lost</strong>.
 
-    img(src="/image/fluentbit/FluentBit.png", alt="", style="width: 50%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    img(src="/image/use-cases/fluentbit/FluentBit.png", alt="", style="width: 50%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 1. Fluent Bit erroneous access pattern leading to data loss.</em>
 
 

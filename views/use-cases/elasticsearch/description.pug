@@ -1,12 +1,14 @@
-extends layout.pug
+extends ../../layout.pug
 
 block navbar-options
     li.nav-item.active
-        a.nav-link(href='/elasticsearch') Description
+        a.nav-link(href='/') Home
+    li.nav-item.active
+        a.nav-link(href='/use-cases/elasticsearch') Description
     li.nav-item
-        a.nav-link(href='/elasticsearch/how2run') How to reproduce
+        a.nav-link(href='/use-cases/elasticsearch/how2run') How to reproduce
     li.nav-item
-        a.nav-link(href='/elasticsearch/portfolio') Portfolio
+        a.nav-link(href='/use-cases/elasticsearch/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') Elasticsearch use case
@@ -16,9 +18,9 @@ block content
         | Namely, we used DIO to understand how Elasticsearch accesses the storage system.
         | Moreover, by following a top-down approach, we show how users can observe inefficient file access patterns.
         | <br>The instructions to reproduce the use case are available at
-        a(href='/elasticsearch/how2run', target='_blank', style='color: blue;')  how to reproduce
+        a(href='/use-cases/elasticsearch/how2run', target='_blank', style='color: blue;')  how to reproduce
         | , while an extendend set of visualizations provided by DIO are available at
-        a(href='/elasticsearch/portfolio', target='_blank', style='color: blue;')  portfolio.
+        a(href='/use-cases/elasticsearch/portfolio', target='_blank', style='color: blue;')  portfolio.
 
     h5 System overview
     p
@@ -26,7 +28,7 @@ block content
         | Moreover, Elasticsearch uses mainly <code>data-related operations (88%)</code>, most of them being <code>write (71%)</code>, <code>pread64 (7%)</code> and <code>read (5%)</code>.
         | Further, it spawns a total of <code>42</code> processes and <code>118</code> threads, while accessing almost <code>4000</code> files.
 
-    img(src="/image/elasticsearch/stats.png", alt="", style="width: 80%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    img(src="/image/use-cases/elasticsearch/stats.png", alt="", style="width: 80%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 1. System overview of Elasticsearch execution</em>
 
     h5 File access patterns
@@ -35,7 +37,7 @@ block content
         | Namely, every <code>30</code> seconds Elasticsearch submits <code>2</code> system calls to the <code>node.lock</code> file (see Figure 2 - blue line).
         | Moreover, every <code>2</code> minutes, <code>10</code> system calls to <code>.es_temp_file</code> file (see Figure 2 - pink line).
 
-    img(src="/image/elasticsearch/file_path_accesses.png", alt="", style="width: 70%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    img(src="/image/use-cases/elasticsearch/file_path_accesses.png", alt="", style="width: 70%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 2. Sample of Elasticsearch file accesses</em>
 
     h5 File access pattern for <em>.es_temp_file</em>
@@ -43,14 +45,14 @@ block content
         | By analyzing in more detail the file access pattern for <code>.es_temp_file</code>, DIO shows that Elasticsearch performs always the same sequecence of system calls:
         | <code>lstat→openat→write→openat→fsync→close→close→lstat→unlink</code> (see Figure 3).
 
-    img(src="/image/elasticsearch/es_temp_file_nano.png", alt="", style="width: 70%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    img(src="/image/use-cases/elasticsearch/es_temp_file_nano.png", alt="", style="width: 70%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 3. File access pattern for .es_temp_file </em>
 
     p
         | <strong>Observation:</strong> this sequence of system calls shows an unexpected duplication of <code>openat</code> and <code>close</code> system calls.
         | <br><strong>Explanation:</strong> As show in Figure 4, Elasticsearch's Java source code used for accessing the .es_temp_file file resorts to high-level I/O libraries, which end up masking the underlying system calls and resulting in the duplication of system calls.
 
-    img(src="/image/elasticsearch/es-alg.png", alt="", style="width: 50%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    img(src="/image/use-cases/elasticsearch/es-alg.png", alt="", style="width: 50%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 4. Mapping between system calls issued to .es_temp_file and corresponding code generating these.</em>
 
     ul

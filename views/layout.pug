@@ -31,9 +31,9 @@ html
 					h3 DIO
 				ul.list-unstyled.components
 					p A tool for diagnosing applications I/O behavior
-					li(class=path=='/'?'active':undefined)
+					li#nav-item-home
 						a(href='/') Home
-					li(class=path=='usage'?'active':undefined)
+					li#nav-item-usage
 						a(href='usage') How to use
 					li#usecases-menu
 						a.dropdown-toggle(href='#usecasesMenu' data-toggle='collapse' aria-expanded='false') Use cases
@@ -42,14 +42,14 @@ html
 						//- 	a(href='/redis') Redis
 						//- li(class=path=="elasticsearch"?'active':undefined)
 						//- 	a(href='/elasticsearch') Elasticsearch
-						li(class=path=="fluentbit"?'active':undefined)
+						li#nav-item-fluentbit
 							a(href='/fluentbit') Fluent Bit
-						li(class=path=="rocksdb"?'active':undefined)
+						li#nav-item-rocksdb
 							a(href='/rocksdb') RocksDB
 					//- li(class=path=="faq"?'active':undefined)
 					//- 	a(href='/faq') FAQ
-					li(class=path=="contact"?'active':undefined)
-						a(href='/contact') Contacts
+					li#nav-item-contacts
+						a(href='/contacts') Contacts
 				ul.list-unstyled.CTAs
 					li
 						a(href='https://github.com/dsrhaslab/dio' target='_blank')
@@ -87,3 +87,25 @@ html
 					console.log(document.getElementById("usecasesMenu"));
 				});
 			});
+
+		script(type='text/javascript').
+			const currentLocation = location.href;
+			console.log("currentLocation: " + currentLocation)
+			var identifier = window.location.pathname;
+			console.log("identifier: " + identifier)
+			if (identifier === "/") {
+				document.getElementById("nav-item-home").className = "active";
+			} else if (identifier.startsWith("/usage")) {
+				document.getElementById("nav-item-usage").className = "active";
+			//- } else if (identifier.startsWith("/redis")) {
+			//- 	document.getElementById("nav-item-redis").className = "active";
+			//- } else if (identifier.startsWith("/elasticsearch")) {
+				//- document.getElementById("nav-item-elasticsearch").className = "active";
+			} else if (identifier.startsWith("/fluentbit")) {
+				document.getElementById("nav-item-fluentbit").className = "active";
+			} else if (identifier.startsWith("/rocksdb")) {
+				document.getElementById("nav-item-rocksdb").className = "active";
+			} else if (identifier.startsWith("/contacts")) {
+				document.getElementById("nav-item-contacts").className = "active";
+			}
+			

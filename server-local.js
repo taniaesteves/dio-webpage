@@ -21,14 +21,14 @@ let rocksdb = require('./routes/rocksdb');
 let fluentbit = require('./routes/fluentbit');
 let usage = require('./routes/usage');
 let faq = require('./routes/faq');
-let contact = require('./routes/contact');
+let contacts = require('./routes/contacts');
 // app.use('/redis', redis);
 // app.use('/elasticsearch', elasticsearch);
 app.use('/rocksdb', rocksdb);
 app.use('/fluentbit', fluentbit);
 app.use('/usage', usage);
 app.use('/faq', faq);
-app.use('/contact', contact);
+app.use('/contacts', contacts);
 
 // Start Server.
 let port = 3005;

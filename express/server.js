@@ -33,8 +33,8 @@ router.get('/usage', function(req, res){
 router.get('/faq', function(req, res){
     res.sendFile('faq.html', { root: views });
 });
-router.get('/contact', function(req, res){
-    res.sendFile('contact.html', { root: views });
+router.get('/contacts', function(req, res){
+    res.sendFile('contacts.html', { root: views });
 });
 
 app.use(bodyParser.json());

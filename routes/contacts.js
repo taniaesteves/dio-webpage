@@ -3,7 +3,7 @@ const router = express.Router();
 
 // Get Articles Page
 router.get('/', function(req, res){
-  res.render('contact', {path: 'contact', usecase: 'false'});
+  res.render('contacts', {path: 'contacts', usecase: 'false'});
 });
 
 module.exports = router;

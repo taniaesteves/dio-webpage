@@ -99,4 +99,4 @@ block content
 
 
                 li <strong>DIO</strong>:
-                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -v /tmp/dio/:/tmp/dio/ -e CORRELATE_PATHS=true -e ES_URL=<DIO_ES_URL>:<DIO_ES_PORT>  taniaesteves/dio-fluentbit:v1.4.0 dio
+                xmp docker run -it --rm --name fluentbit  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v /tmp/dio_data:/dio_data -e CORRELATE_PATHS=true -e ES_SERVERS=<DIO_ES_URL>:<DIO_ES_PORT> taniaesteves/dio-fluentbit:v1.4.0 dio

@@ -22,10 +22,10 @@ router.get('/', (req, res) => {
 //     res.sendFile('elasticsearch/elasticsearch/elasticsearch.html', { root: views });
 // });
 router.get('/use-cases/rocksdb', function(req, res){
-    res.sendFile('use-cases/rocksdb/description.html', { root: views });
+    res.sendFile('use-cases/rocksdb.html', { root: views });
 });
 router.get('/use-cases/fluentbit', function(req, res){
-    res.sendFile('use-cases/fluentbit/description.html', { root: views });
+    res.sendFile('use-cases/fluentbit.html', { root: views });
 });
 router.get('/usage', function(req, res){
     res.sendFile('usage.html', { root: views });

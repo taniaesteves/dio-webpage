@@ -42,7 +42,7 @@ html
 						//- 	a(href='/redis') Redis
 						//- li(class=path=="elasticsearch"?'active':undefined)
 						//- 	a(href='/elasticsearch') Elasticsearch
-						li(class=path(class="<%= === 'fluentbit' && 'active' %>"))
+						li(class=path=="fluentbit"?'active':undefined)
 							a(href='/fluentbit') Fluent Bit
 						li(class=path=="rocksdb"?'active':undefined)
 							a(href='/rocksdb') RocksDB
@@ -83,5 +83,7 @@ html
 				$('#sidebarCollapse').on('click', function () {
 					$('#sidebar').toggleClass('active');
 					$(this).toggleClass('active');
+					console.log("inside myFunction");
+					console.log(document.getElementById("usecasesMenu"));
 				});
 			});

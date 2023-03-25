@@ -27,9 +27,9 @@ router.get('/use-cases/rocksdb', function(req, res){
 router.get('/use-cases/fluentbit', function(req, res){
     res.sendFile('use-cases/fluentbit.html', { root: views });
 });
-router.get('/usage', function(req, res){
-    res.sendFile('usage.html', { root: views });
-});
+// router.get('/usage', function(req, res){
+//     res.sendFile('usage.html', { root: views });
+// });
 router.get('/faq', function(req, res){
     res.sendFile('faq.html', { root: views });
 });

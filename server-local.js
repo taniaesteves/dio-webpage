@@ -19,14 +19,14 @@ app.get('/', (req, res) => {
 // let elasticsearch = require('./routes/use-cases/elasticsearch');
 let rocksdb = require('./routes/use-cases/rocksdb');
 let fluentbit = require('./routes/use-cases/fluentbit');
-let usage = require('./routes/usage');
+// let usage = require('./routes/usage');
 let faq = require('./routes/faq');
 let contacts = require('./routes/contacts');
 // app.use('/redis', redis);
 // app.use('/elasticsearch', elasticsearch);
 app.use('/use-cases/rocksdb', rocksdb);
 app.use('/use-cases/fluentbit', fluentbit);
-app.use('/usage', usage);
+// app.use('/usage', usage);
 app.use('/faq', faq);
 app.use('/contacts', contacts);
 

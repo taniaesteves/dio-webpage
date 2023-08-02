@@ -15,10 +15,11 @@ block content
     h4(style='text-align: center;') How to reproduce
 
     p
-        | This page describes how to reproduce the results presented in the paper for three setups:
+        | This page describes how to reproduce the results presented in the paper for four setups:
         ul
             li <strong>Vanilla</strong>: without tracing I/O events
-            li <strong>strace</strong>: tracing system calls with strace
+            li <strong>Strace</strong>: tracing system calls with Strace tool
+            li <strong>Sysdig</strong>: tracing system calls with Sysdig tool
             li <strong>DIO</strong>: tracing and analyzing system calls with DIO
 
     h5 Elasticsearch configuration
@@ -56,17 +57,20 @@ block content
     h5 Docker images
     ul
         li <strong>Docker image:</strong>
-            a(href='#URL_OMITTED', style='color: blue;')  DIO_ES_IMAGE_OMITTED (omitted due to double blind review)
+            a(href='https://hub.docker.com/r/taniaesteves/elasticsearch_dio', style='color: blue;', target='_blank')  taniaesteves/elasticsearch_dio:v1.0.0
         li <strong>Run Elasticsearch server:</strong>
             ul
                 li <strong>Vanilla</strong>:
-                xmp docker run -it --rm --name es830  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ DIO_ES_IMAGE_OMITTED
+                xmp docker run -it -d --name es830 --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ taniaesteves/elasticsearch_dio:v1.0.0
 
                 li <strong>strace</strong>:
-                xmp docker run -it --rm --name es830  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v strace_data:/strace_data DIO_ES_IMAGE_OMITTED strace
+                xmp docker run -it -d --name es830 --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v /tmp/strace_data:/strace_data taniaesteves/elasticsearch_dio:v1.0.0 strace
+
+                li <strong>Sysdig</strong> (run along the vanilla command):
+                xmp docker run -it -d --name sysdig --privileged -v /var/run/docker.sock:/host/var/run/docker.sock -v /dev:/host/dev -v /proc:/host/proc:ro -v /boot:/host/boot:ro -v /lib/modules:/host/lib/modules:ro -v /usr:/host/usr:ro -v /tmp/sysdig_data:/home --net=host -e SYSDIG_BPF_PROBE="" sysdig/sysdig:0.31.4 sysdig -B -t a -p "*%evt.num %evt.outputtime %evt.cpu %proc.name (%thread.tid) %evt.dir %evt.type %evt.rawres %evt.args" container.name=es830 and "evt.type in ('"'open','openat','creat','read','pread','readv','write','pwrite','writev','lseek','truncate','ftruncate','rename','renameat','renameat2','close','unlink','unlinkat','stat','fstat','lstat','fstatfs','newfstatat','setxattr','getxattr','listxattr','removexattr','lsetxattr','lgetxattr','llistxattr','lremovexattr','fsetxattr','fgetxattr','flistxattr','fsync','fdatasync','readlink','readlinkat','mknod','mknodat'"')" -s 1 -w /home/sysdig_trace.scap
 
                 li <strong>DIO</strong>:
-                xmp docker run -it --rm --name es830  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -v /tmp/dio/:/tmp/dio/ -e CORRELATE_PATHS=true -e ES_URL=<DIO_ES_URL>:<DIO_ES_PORT>  DIO_ES_IMAGE_OMITTED dio --target_paths /usr/share/elasticsearch-8.3.0-SNAPSHOT
+                xmp docker run -it -d --name es830 --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v /tmp/dio_data:/dio_data -e CORRELATE_PATHS=true -e ES_URL=<ES_URL> taniaesteves/elasticsearch_dio:v1.0.0 dio --target_paths /usr/share/elasticsearch-8.3.0-SNAPSHOT
 
         li <strong>Run Elasticsearch benchmark</strong>:
         ul

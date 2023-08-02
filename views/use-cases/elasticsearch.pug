@@ -1,4 +1,4 @@
-extends ../../layout.pug
+extends ../layout.pug
 
 block navbar-options
     li.nav-item.active
@@ -25,7 +25,7 @@ block content
     h5 System overview
     p
         | Using DIO we observed that Elasticsearch generated about <code>1 million</code> storage-related system calls, <code>99%</code> of them targeting <code>regular files</code> and the remaining ones targeting directories.
-        | Moreover, Elasticsearch uses mainly <code>data-related operations (88%)</code>, most of them being <code>write (71%)</code>, <code>pread64 (7%)</code> and <code>read (5%)</code>.
+        | Moreover, Elasticsearch uses mainly <code>data-related operations (88%)</code>, most of them being <code>write (70.97%)</code>, <code>pread64 (6.63%)</code> and <code>read (5.17%)</code>.
         | Further, it spawns a total of <code>42</code> processes and <code>118</code> threads, while accessing almost <code>4000</code> files.
 
     img(src="/image/use-cases/elasticsearch/stats.png", alt="", style="width: 80%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
@@ -34,8 +34,8 @@ block content
     h5 File access patterns
     p
         | By observing the file access patterns, DIO shows that some files exhibit a constant access pattern, even in the absence of client requests.
-        | Namely, every <code>30</code> seconds Elasticsearch submits <code>2</code> system calls to the <code>node.lock</code> file (see Figure 2 - blue line).
-        | Moreover, every <code>2</code> minutes, <code>10</code> system calls to <code>.es_temp_file</code> file (see Figure 2 - pink line).
+        | Namely, every <code>30</code> seconds Elasticsearch submits at least <code>2</code> system calls to the <code>node.lock</code> file (see Figure 2 - blue line).
+        | Moreover, every <code>2</code> minutes, <code>9</code> system calls to <code>.es_temp_file</code> file (see Figure 2 - pink line).
 
     img(src="/image/use-cases/elasticsearch/file_path_accesses.png", alt="", style="width: 70%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
     p(style="text-align: center") <em>Figure 2. Sample of Elasticsearch file accesses</em>

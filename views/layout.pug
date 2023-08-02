@@ -38,10 +38,10 @@ html
 					li#usecases-menu
 						a.dropdown-toggle(href='#usecasesMenu' data-toggle='collapse' aria-expanded='false') Use cases
 					ul#usecasesMenu.collapse.list-unstyled(class='show')
-						//- li(class=path=="redis"?'active':undefined)
-						//- 	a(href='/use-cases/redis') Redis
-						//- li(class=path=="elasticsearch"?'active':undefined)
-						//- 	a(href='/use-cases/elasticsearch') Elasticsearch
+						li#nav-item-redis
+							a(href='/use-cases/redis') Redis
+						li#nav-item-elasticsearch
+							a(href='/use-cases/elasticsearch') Elasticsearch
 						li#nav-item-fluentbit
 							a(href='/use-cases/fluentbit') Fluent Bit
 						li#nav-item-rocksdb
@@ -97,10 +97,10 @@ html
 				document.getElementById("nav-item-home").className = "active";
 			//- } else if (identifier.startsWith("/usage")) {
 			//- 	document.getElementById("nav-item-usage").className = "active";
-			//- } else if (identifier.startsWith("/redis")) {
-			//- 	document.getElementById("nav-item-redis").className = "active";
-			//- } else if (identifier.startsWith("/elasticsearch")) {
-				//- document.getElementById("nav-item-elasticsearch").className = "active";
+			} else if (identifier.startsWith("/redis")) {
+				document.getElementById("nav-item-redis").className = "active";
+			} else if (identifier.startsWith("/elasticsearch")) {
+				document.getElementById("nav-item-elasticsearch").className = "active";
 			} else if (identifier.startsWith("/fluentbit")) {
 				document.getElementById("nav-item-fluentbit").className = "active";
 			} else if (identifier.startsWith("/rocksdb")) {

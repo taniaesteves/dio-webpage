@@ -1,4 +1,4 @@
-extends ../../layout.pug
+extends ../layout.pug
 
 block navbar-options
     li.nav-item.active
@@ -15,7 +15,7 @@ block content
 
     p
         | This use case considers the diagnosis of an issue identified in the Redis in-memory data store
-        a(href='https://github.com/use-cases/redis/redis/pull/10531', target='_blank', style='color: blue;')  (see pull request #10531).
+        a(href='https://github.com/redis/redis/pull/10531', target='_blank', style='color: blue;')  (see pull request #10531).
         | <br>The instructions to reproduce the use case are available at
         a(href='/use-cases/redis/how2run', target='_blank', style='color: blue;')  how to reproduce
         | , while an extendend set of visualizations provided by DIO are available at
@@ -30,8 +30,14 @@ block content
         | Using DIO to observe I/O access patterns for the log file, we can see the same set of system calls being done repeatedly, with a sequential access pattern (i.e., the offset increases for each set of operations). Further analysing this pattern, we can see the exact order of requests for one of these sets:
         | <code>openat→lseek→fstat→write→close</code>.
 
-    img(src="/image/use-cases/redis/redis-old.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
-    p(style="text-align: center") <em>Figure 1. Log file access pattern, depicting system calls issued over time (V1)</em>
+    img(src="/image/use-cases/redis/old-all.png", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    p(style="text-align: center") <em>Figure 1. Log file access pattern, depicting system calls issued over time per minute (V1)</em>
+
+    img(src="/image/use-cases/redis/old-nano.png", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    p(style="text-align: center") <em>Figure 2. Sample of first 350 microseconds within a millisecong of the log file access pattern(V1)</em>
+
+    //- img(src="/image/use-cases/redis/redis-old.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    //- p(style="text-align: center") <em>Figure 1. Log file access pattern, depicting system calls issued over time (V1)</em>
 
     h5 Solution
     p
@@ -45,5 +51,12 @@ block content
         | Using DIO, we are also able to validate the proposed solution by observing the new access pattern for the log file.
         | With the suggested fix, redundant <code>open</code> and <code>close</code> operations are avoided, along with the need for using <code>lseek</code> before every write operation. Also, <code>writev</code> is now used to write log lines, instead of <code>write</code>.
 
-    img(src="/image/use-cases/redis/redis-new.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
-    p(style="text-align: center") <em>Figure 2. Log file access pattern, depicting system calls issued over time (v2)</em>
+
+    img(src="/image/use-cases/redis/new-all.png", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    p(style="text-align: center") <em>Figure 1. Log file access pattern, depicting system calls issued over time per minute (V2)</em>
+
+    img(src="/image/use-cases/redis/new-nano.png", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    p(style="text-align: center") <em>Figure 2. Sample of first 350 microseconds within a millisecong of the log file access pattern(V2)</em>
+
+    //- img(src="/image/use-cases/redis/redis-new.gif", alt="", style="width: 60%; text-align: center; display: block; margin-left: auto; margin-right: auto;")
+    //- p(style="text-align: center") <em>Figure 2. Log file access pattern, depicting system calls issued over time (v2)</em>

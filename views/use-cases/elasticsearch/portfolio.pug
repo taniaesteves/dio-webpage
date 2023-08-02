@@ -30,7 +30,7 @@ block content
             .specExplanation
                 p
                     | Elasticsearch issued about 1 million storage system calls, most of which were <code>write</code> system calls (71%).
-                    | <br>Besides the <code>write</code> operations, Elasticsearch also issued <code>read</code>, <code>seek</code>, <code>stat</code>, <code>fsync</code>, <code>close</code>, <code>unlink</code>, <code>rename</code> and <code>readlink</code> operations (including several variants of each system call) .
+                    | <br>Besides the <code>write</code> operations, Elasticsearch also issued <code>pread64</code>, <code>read</code>, <code>lseek</code>, <code>stat</code>, <code>fdatasync</code>, <code>pwrite64</code>, <code>fstat</code>, <code>openat</code>, <code>lstat</code>, <code>close</code> and other operations.
                     | <br>Moreover, the Elasticsearch application spawned 42 processes and 118 threads, and accessed almost 4000 different file paths.
         .w3-third
             img.specImage(src='/image/use-cases/elasticsearch/data_vs_meta.png' style='width:100%')
@@ -45,9 +45,9 @@ block content
             p.specDescription Shows the average execution time for the top 5 system calls
             .specExplanation
                 p
-                    | The system call with the highest average execution time was <code>fsync</code>, which took <code>6,5</code> milliseconds on average.
-                    | <br><code>fdatasync</code> was the second most expensive system call, with an average execution time of <code>6,4</code> milliseconds.
-                    | <br>The average execution time of the <code>unlink</code> system call was <code>0,43</code> milliseconds.
+                    | The system call with the highest average execution time was <code>fsync</code>, which took <code>2.99</code> milliseconds on average.
+                    | <br><code>fdatasync</code> was the second most expensive system call, with an average execution time of <code>2.46</code> milliseconds.
+                    | <br>The average execution time of the <code>unlink</code> system call was <code>0.36</code> milliseconds.
     .w3-row-padding.w3-padding-16.w3-center
         .w3-third
             img.specImage(src='/image/use-cases/elasticsearch/file_types.png' style='width:100%')
@@ -64,8 +64,8 @@ block content
             .specExplanation
                 p
                     | Some files exhibit a constant access pattern, even in the absence of client requests.
-                    | <br>Every <code>30</code> seconds Elasticsearch submits <code>2</code> system calls to the <code>node.lock</code> file (blue line).
-                    | <br>Every <code>2</code> minutes, <code>10</code> system calls to <code>.es_temp_file</code> file (pink line).
+                    | <br>Every <code>30</code> seconds Elasticsearch submits at least <code>2</code> system calls to the <code>node.lock</code> file (blue line).
+                    | <br>Every <code>2</code> minutes, Elasticsearch submits <code>9</code> system calls to <code>.es_temp_file</code> file (pink line).
         .w3-third
             img.specImage(src='/image/use-cases/elasticsearch/es_temp_file_nano.png' style='width:100%')
             h3.specTitle File path accesses for .es_temp_file

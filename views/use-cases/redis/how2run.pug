@@ -15,10 +15,11 @@ block content
     h4(style='text-align: center;') How to reproduce
 
     p
-        | This page describes how to reproduce the results presented in the paper for three setups:
+        | This page describes how to reproduce the results presented in the paper for four setups:
         ul
             li <strong>Vanilla</strong>: without tracing I/O events
-            li <strong>strace</strong>: tracing system calls with strace
+            li <strong>Strace</strong>: tracing system calls with Strace tool
+            li <strong>Sysdig</strong>: tracing system calls with Sysdig tool
             li <strong>DIO</strong>: tracing and analyzing system calls with DIO
 
     h5 Redis configuration
@@ -53,18 +54,25 @@ block content
 
     h5 Docker images
     ul
-        li <strong>Docker image:</strong>
-            a(href='#URL_OMITTED', style='color: blue;')  DIO_REDIS_IMAGE_OMITTED (omitted due to double blind review)
+        li <strong>Image:</strong> 
+            a(href='https://hub.docker.com/r/taniaesteves/redis_dio', style='color: blue;', target='_blank') taniaesteves/redis_dio
+            ul 
+                li TAG "v1" - Redis with the inefficient access pattern
+                li TAG "v2" - Redis with the correct access pattern
+                
         li <strong>Run Redis server:</strong>
             ul
                 li <strong>Vanilla</strong>:
-                xmp docker run -it --rm --name redis-server  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ DIO_REDIS_IMAGE_OMITTED
+                xmp docker run -it -d --name redis-server  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ taniaesteves/redis_dio:v1
 
-                li <strong>strace</strong>:
-                xmp docker run -it --rm --name redis-server  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v strace_data:/strace_data DIO_REDIS_IMAGE_OMITTED strace
+                li <strong>Strace</strong>:
+                xmp docker run -it -d --name redis-server  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v /tmp/strace_data:/strace_data taniaesteves/redis_dio:v1 strace
+
+                li <strong>Sysdig</strong> (run along the vanilla command):
+                xmp docker run -it -d --name sysdig --privileged -v /var/run/docker.sock:/host/var/run/docker.sock -v /dev:/host/dev -v /proc:/host/proc:ro -v /boot:/host/boot:ro -v /lib/modules:/host/lib/modules:ro -v /usr:/host/usr:ro -v /tmp/sysdig_data:/home --net=host -e SYSDIG_BPF_PROBE="" sysdig/sysdig:0.31.4 sysdig -B -t a -p "*%evt.num %evt.outputtime %evt.cpu %proc.name (%thread.tid) %evt.dir %evt.type %evt.rawres %evt.args" container.name="redis-server" and "evt.type in ('"'open','openat','creat','read','pread','readv','write','pwrite','writev','lseek','truncate','ftruncate','rename','renameat','renameat2','close','unlink','unlinkat','stat','fstat','lstat','fstatfs','newfstatat','setxattr','getxattr','listxattr','removexattr','lsetxattr','lgetxattr','llistxattr','lremovexattr','fsetxattr','fgetxattr','flistxattr','fsync','fdatasync','readlink','readlinkat','mknod','mknodat'"')" and "fd.type in  ('"'file','directory'"')" -s 1 -w /home/sysdig_trace.scap
 
                 li <strong>DIO</strong>:
-                xmp docker run -it --rm --name redis-server  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v dio_data:/dio_data -v dio.yaml:/usr/share/dio/conf/config.yaml -e CORRELATE_PATHS=true -e ES_URL=<DIO_ES_URL>:<DIO_ES_PORT> DIO_REDIS_IMAGE_OMITTED dio
+                xmp docker run -it -d --name redis-server  --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ -v /tmp/dio_data:/dio_data -e CORRELATE_PATHS=true -e ES_URL=<ES_URL> taniaesteves/redis_dio:v1 dio
 
         li <strong>Run Redis benchmark</strong>:
-        xmp docker run -it --rm --name redis-bench --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ DIO_REDIS_IMAGE_OMITTED benchmark
+        xmp docker run -it --rm --name redis-bench --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ taniaesteves/redis_dio:v1 benchmark

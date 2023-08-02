@@ -7,6 +7,8 @@ block navbar-options
         a.nav-link(href='#howitworks') How it works
     li.nav-item
         a.nav-link(href='#usecases') Use cases
+    li.nav-item
+        a.nav-link(href='#publications') Publications
     li.nav-item 
         a.nav-link(href='#download') Download
 
@@ -104,17 +106,17 @@ block content
 
     p DIO was testes and validated with two production-level systems.
 
-    //- br
-    //- h4 Redis
-    //- p
-    //-     | Diagnosis of inefficient use of system calls that lead to poor storage performance
-    //-     a(href='/redis', target='_blank', style='color: blue;')  (see more).
+    br
+    h4 Redis
+    p
+        | Diagnosis of inefficient use of system calls that lead to poor storage performance
+        a(href='/use-cases/redis', target='_blank', style='color: blue;')  (see more).
 
-    //- br
-    //- h4 Elasticsearch
-    //- p
-    //-     | Observation of unexpected file access patterns caused by the usage of high-level libraries that lead to redundant I/O calls.
-    //-     a(href='/elasticsearch', target='_blank', style='color: blue;')  (see more).
+    br
+    h4 Elasticsearch
+    p
+        | Observation of unexpected file access patterns caused by the usage of high-level libraries that lead to redundant I/O calls.
+        a(href='/use-cases/elasticsearch', target='_blank', style='color: blue;')  (see more).
 
     br
     h4 Fluent Bit
@@ -131,6 +133,18 @@ block content
 
     .line 
 
+    h2#publications Publications 
+
+    ul 
+        li
+            p
+                | <strong>Diagnosing applications' I/O behavior through system call observability</strong>.<br>
+                | Tânia Esteves, Ricardo Macedo, Rui Oliveira and João Paulo.<br>
+                | <em>53rd Annual IEEE/IFIP International Conference on Dependable Systems and Networks Workshops (DSN-W)</em>. <br>
+                | <a href="https://doi.org/10.48550/arXiv.2304.08569" target="_blank" style="color: blue;">https://doi.org/10.48550/arXiv.2304.08569</a>
+
+    .line 
+    
     h2#download Download
 
     p DIO is an open-source project available at 

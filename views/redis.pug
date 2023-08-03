@@ -1,14 +1,14 @@
-extends ../layout.pug
+extends layout.pug
 
 block navbar-options
     li.nav-item.active
         a.nav-link(href='/') Home
     li.nav-item.active
-        a.nav-link(href='/use-cases/redis') Description
+        a.nav-link(href='/redis') Description
     li.nav-item
-        a.nav-link(href='/use-cases/redis/how2run') How to reproduce
+        a.nav-link(href='/redis/how2run') How to reproduce
     li.nav-item
-        a.nav-link(href='/use-cases/redis/portfolio') Portfolio
+        a.nav-link(href='/redis/portfolio') Portfolio
 
 block content
     h2(style='text-align: center;') Redis use case
@@ -17,9 +17,9 @@ block content
         | This use case considers the diagnosis of an issue identified in the Redis in-memory data store
         a(href='https://github.com/redis/redis/pull/10531', target='_blank', style='color: blue;')  (see pull request #10531).
         | <br>The instructions to reproduce the use case are available at
-        a(href='/use-cases/redis/how2run', target='_blank', style='color: blue;')  how to reproduce
+        a(href='/redis/how2run', target='_blank', style='color: blue;')  how to reproduce
         | , while an extendend set of visualizations provided by DIO are available at
-        a(href='/use-cases/redis/portfolio', target='_blank', style='color: blue;')  portfolio.
+        a(href='/redis/portfolio', target='_blank', style='color: blue;')  portfolio.
 
     h5 Problem
     p

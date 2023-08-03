@@ -7,11 +7,11 @@ router.get('/', function(req, res){
 });
 
 router.get('/how2run', (req, res) => {
-    res.render('use-cases/redis/how2run');
+    res.render('redis/how2run');
 });
 
 router.get('/portfolio', (req, res) => {
-    res.render('use-cases/redis/portfolio');
+    res.render('redis/portfolio');
 });
 
 

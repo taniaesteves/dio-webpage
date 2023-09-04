@@ -15,8 +15,8 @@ router.get('/', (req, res) => {
 });
 
 // Other routes.
-router.get('/redis', function(req, res){
-    res.sendFile('redis/redis.html', { root: views });
+router.get('/use-cases/redis', function(req, res){
+    res.sendFile('use-cases/redis/redis.html', { root: views });
 });
 router.get('/use-cases/elasticsearch', function(req, res){
     res.sendFile('use-cases/elasticsearch/elasticsearch.html', { root: views });

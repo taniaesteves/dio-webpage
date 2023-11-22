@@ -9,7 +9,7 @@ block navbar-options
         a.nav-link(href='#usecases') Use cases
     li.nav-item
         a.nav-link(href='#publications') Publications
-    li.nav-item 
+    li.nav-item
         a.nav-link(href='#download') Download
 
 block content
@@ -57,9 +57,20 @@ block content
     .line
     h2#howitworks How it works
 
-    img(src='/image/DIO-design-paper.svg', style='width: 50%; display: block; margin-left: auto; margin-right: auto;')
-    p(style='text-align: center;') Figure 1. DIO architecture and flow of events
+    //- img(src='/image/DIO-design-paper.svg', style='width: 50%; display: block; margin-left: auto; margin-right: auto;')
+    //- p(style='text-align: center;') Figure 1. DIO architecture and flow of events
 
+    //- <video
+    //-     controls
+    //-     loop
+    //-     autoplay
+    //-     src="weekend.mp4"
+    //-     poster="benefits-of-coding.jpg"
+    //- ></video>
+
+    center
+        video(controls='' loop='' autoplay='' muted='true' src='/video/dio-flow.mov' width='1000px' height='500px' poster='benefits-of-coding.jpg')
+        p(style='text-align: center;') DIO's architecture and flow of events.
 
     p
         |
@@ -131,11 +142,11 @@ block content
         a(href='/use-cases/rocksdb', target='_self', style='color: blue;')  (see more).
 
 
-    .line 
+    .line
 
-    h2#publications Publications 
+    h2#publications Publications
 
-    ul 
+    ul
         li
             p
                 | <strong>Diagnosing applications' I/O behavior through system call observability</strong>.<br>
@@ -151,10 +162,10 @@ block content
                 | <em>42nd International Symposium on Reliable Distributed Systems (SRDS)</em>. <br>
                 //- | <a href="https://doi.org/10.48550/arXiv.2304.08569" target="_blank" style="color: blue;">https://doi.org/10.48550/arXiv.2304.08569</a>
 
-    .line 
-    
+    .line
+
     h2#download Download
 
-    p DIO is an open-source project available at 
+    p DIO is an open-source project available at
         a(href='https://github.com/dsrhaslab/dio', target='_blank', style='color: blue;')  https://github.com/dsrhaslab/dio.
 

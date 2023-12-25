@@ -19,15 +19,17 @@ let redis = require('./routes/use-cases/redis');
 let elasticsearch = require('./routes/use-cases/elasticsearch');
 let rocksdb = require('./routes/use-cases/rocksdb');
 let fluentbit = require('./routes/use-cases/fluentbit');
-// let usage = require('./routes/usage');
-let faq = require('./routes/faq');
+let about = require('./routes/docs/about');
+let installation = require('./routes/docs/installation');
+let usage = require('./routes/docs/usage');
 let contacts = require('./routes/contacts');
 app.use('/use-cases/redis', redis);
 app.use('/use-cases/elasticsearch', elasticsearch);
 app.use('/use-cases/rocksdb', rocksdb);
 app.use('/use-cases/fluentbit', fluentbit);
-// app.use('/usage', usage);
-app.use('/faq', faq);
+app.use('/docs/about', about);
+app.use('/docs/installation', installation);
+app.use('/docs/usage', usage);
 app.use('/contacts', contacts);
 
 // Start Server.

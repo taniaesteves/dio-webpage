@@ -1,0 +1,79 @@
+extends ../layout.pug
+
+block navbar-options
+    li.nav-item.active
+        a.nav-link(href='/') Home
+    li.nav-item.active
+        a.nav-link(href='#about') About
+    li.nav-item
+        a.nav-link(href='#Installation') Installation
+
+block content
+    h1#aboutDIO About DIO
+
+    br
+
+    h3 What is DIO?
+
+    br
+    p
+        | DIO is a generic tool for observing and diagnosing applications storage I/O.
+        | It is designed to be used by applications developers and users to understand how applications interact with storage systems.
+        | By combining system call tracing with a customizable data analysis and visualization pipeline, DIO provide non-intrusive and comprehensive I/O diagnosis for applications using in-kernel POSIX storage backends (e.g., ext4, linux block device).
+
+    br
+
+    h3 How DIO works
+
+    br
+
+    center
+        video(controls='' loop='' autoplay='' muted='true' src='/video/dio-flow.mov' width='60%' poster='/image/DIO-design-paper.svg')
+        p(style='text-align: center;') DIO's architecture and flow of events.
+
+    p
+        |
+
+    br
+
+    ul
+        li
+            h4 Tracer
+
+        p
+            | The <em>tracer</em> component relies on the eBPF technology to intercept system calls done by applications in a non-intrusive way.
+            | Briefly, it comprises a set of eBPF programs that, at the initialization phase (
+            span.blackcircle 1
+            | ), are attached to system calls tracepoints.
+            | These eBPF programs will collect the relevant information about the system calls (in kernel) and place it in a ring buffer (
+            span.blackcircle 2
+            | ) to be accessed in user space.
+            | At user space, the tracer is constantly pooling events from the ring buffer (
+            span.blackcircle 3
+            | ) and sending them to the backend (
+            span.blackcircle 4
+            | ) for storage.
+
+
+        li
+            h4 Backend
+
+        p
+            | The <em>backend</em> component persists and indexes events (
+            span.blackcircle 5
+            | ), and allows users to query and summarize (e.g., aggregate) stored information (
+            span.blackcircle 6
+            | ).
+            | It uses the Elasticsearch distributed engine for storing and processing large volumes of data.
+            | By providing an interface for searching, querying, and updating data, the backend allows users to develop and integrate customized data correlation algorithms.
+
+
+        li
+            h4 Visualizer
+        p
+            | The <em>visualizer</em> component provides near real-time visualization of the traced events by querying the backend (
+            span.blackcircle 7
+            | ).
+            | It uses Kibana, the data visualization dashboard software for Elasticsearch, which offers a web interface for data exploration and analysis. Moreover, it allows users to select specific types of data (e.g., system call type, arguments) to build different and customized representations.
+
+

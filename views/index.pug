@@ -3,14 +3,14 @@ extends layout.pug
 block navbar-options
     li.nav-item.active
         a.nav-link(href='#features') Features
-    li.nav-item
-        a.nav-link(href='#howitworks') How it works
-    li.nav-item
-        a.nav-link(href='#usecases') Use cases
+    //- li.nav-item
+    //-     a.nav-link(href='#howitworks') How it works
     li.nav-item
         a.nav-link(href='#publications') Publications
     li.nav-item
-        a.nav-link(href='#download') Download
+        a.nav-link(href='#usecases') Use cases
+    //- li.nav-item
+    //-     a.nav-link(href='#download') Download
 
 block content
     h1#dio-description(style='text-align: center;') DIO
@@ -18,27 +18,42 @@ block content
         em Diagnosing applications I/O behavior <br>through system call observability
 
     br
+    //- p
+    //-     | DIO is a generic tool for observing and diagnosing applications storage I/O.
+    //-     | It is designed to be used by applications developers and users to understand how applications interact with storage systems.
+    //-     | By combining system call tracing with a customizable data analysis and visualization pipeline, DIO provide non-intrusive and comprehensive I/O diagnosis for applications using in-kernel POSIX storage systems (e.g., ext4, linux block device).
+
     p
-        | DIO is a generic tool for observing and diagnosing applications storage I/O.
+        | DIO is a generic tool for observing and diagnosing applications' storage I/O.
+
+    p
         | It is designed to be used by applications developers and users to understand how applications interact with storage systems.
         | By combining system call tracing with a customizable data analysis and visualization pipeline, DIO provide non-intrusive and comprehensive I/O diagnosis for applications using in-kernel POSIX storage systems (e.g., ext4, linux block device).
 
+    p DIO is an open-source project available at
+        a(href='https://github.com/dsrhaslab/dio', target='_blank', style='color: blue;')  https://github.com/dsrhaslab/dio.
 
-    br
+    .line
+
     h2#features Features
 
+    br
     ul
         li
-            | <strong>Generic and non-intrusive</strong>: DIO can be used to observe I/O system calls made by any application interacting with in-kernel storage systems without requiring any modification to the application code.
+            h6 Generic and non-intrusive
+            p DIO can be used to observe I/O system calls made by any application interacting with in-kernel storage systems without requiring any modification to the application code.
         li
-            | <strong>Flexible</strong>: DIO can be configured to collect only the information that is relevant to the user. Namely, DIO allows users to filter events based on:
+            h6 Flexible
+            p  DIO can be configured to collect only the information that is relevant to the user. Namely, DIO allows users to filter events based on:
             ul
                 li process name (command)
                 li process/thread IDs
                 li system call types
                 li file paths
+            br
         li
-            | <strong>Comprehensive</strong>: DIO collects a wide range of information about the I/O system calls made by applications. Namely, DIO collects:
+            h6 Comprehensive
+            p  DIO collects a wide range of information about the I/O system calls made by applications. Namely, DIO collects:
             ul
                 li system call type, arguments and return value
                 li process name (command), process ID, thread ID
@@ -48,14 +63,16 @@ block content
                     li file type
                     li file offset
                     li file tag
+                br
         li
-            | <strong>Pratical and timely analysis</strong>: DIO provides a full pipeline to capture, analyze and visualize collected data in a timely manner. Namely, DIO provides:
+            h6 Pratical and timely analysis
+            p  DIO provides a full pipeline to capture, analyze and visualize collected data in a timely manner. Namely, DIO provides:
             ul
                 li a <strong><em>tracer</em></strong> component that intercepts system calls made by applications.
                 li a <strong><em>backend</em></strong> component that stores collected data in a database and enables users to query traced data, apply filters to analyze specific information, and correlate different types of data.
                 li a <strong><em>visualizer</em></strong> component that allows users to query the database and visualize the results in a web interface and build customized visualizations.
     .line
-    h2#howitworks How it works
+    //- h2#howitworks How it works
 
     //- img(src='/image/DIO-design-paper.svg', style='width: 50%; display: block; margin-left: auto; margin-right: auto;')
     //- p(style='text-align: center;') Figure 1. DIO architecture and flow of events
@@ -68,47 +85,88 @@ block content
     //-     poster="benefits-of-coding.jpg"
     //- ></video>
 
-    center
-        video(controls='' loop='' autoplay='' muted='true' src='/video/dio-flow.mov' width='1000px' height='500px' poster='benefits-of-coding.jpg')
-        p(style='text-align: center;') DIO's architecture and flow of events.
+    //- center
+    //-     video(controls='' loop='' autoplay='' muted='true' src='/video/dio-flow.mov' width='1000px' height='500px' poster='/image/DIO-design-paper.svg')
+    //-     p(style='text-align: center;') DIO's architecture and flow of events.
 
-    p
-        |
+    //- p
+    //-     |
+
+    //- br
+    //- h4 Tracer
+    //- p
+    //-     | The <em>tracer</em> component relies on the eBPF technology to intercept system calls done by applications in a non-intrusive way.
+    //-     | Briefly, it comprises a set of eBPF programs that, at the initialization phase (
+    //-     span.blackcircle 1
+    //-     | ), are attached to system calls tracepoints.
+    //-     | These eBPF programs will collect the relevant information about the system calls (in kernel) and place it in a ring buffer (
+    //-     span.blackcircle 2
+    //-     | ) to be accessed in user space.
+    //-     | At user space, the tracer is constantly pooling events from the ring buffer (
+    //-     span.blackcircle 3
+    //-     | ) and sending them to the backend (
+    //-     span.blackcircle 4
+    //-     | ) for storage.
+
+    //- br
+    //- h4 Backend
+    //- p
+    //-     | The <em>backend</em> component persists and indexes events (
+    //-     span.blackcircle 5
+    //-     | ), and allows users to query and summarize (e.g., aggregate) stored information (
+    //-     span.blackcircle 6
+    //-     | ).
+    //-     | It uses the Elasticsearch distributed engine for storing and processing large volumes of data.
+    //-     | By providing an interface for searching, querying, and updating data, the backend allows users to develop and integrate customized data correlation algorithms.
+
+    //- br
+    //- h4 Visualizer
+    //- p
+    //-     | The <em>visualizer</em> component provides near real-time visualization of the traced events by querying the backend (
+    //-     span.blackcircle 7
+    //-     | ).
+    //-     | It uses Kibana, the data visualization dashboard software for Elasticsearch, which offers a web interface for data exploration and analysis. Moreover, it allows users to select specific types of data (e.g., system call type, arguments) to build different and customized representations.
+
+
+    //- .line
+
+
+    h2#publications Publications
 
     br
-    h4 Tracer
-    p
-        | The <em>tracer</em> component relies on the eBPF technology to intercept system calls done by applications in a non-intrusive way.
-        | Briefly, it comprises a set of eBPF programs that, at the initialization phase (
-        span.blackcircle 1
-        | ), are attached to system calls tracepoints.
-        | These eBPF programs will collect the relevant information about the system calls (in kernel) and place it in a ring buffer (
-        span.blackcircle 2
-        | ) to be accessed in user space.
-        | At user space, the tracer is constantly pooling events from the ring buffer (
-        span.blackcircle 3
-        | ) and sending them to the backend (
-        span.blackcircle 4
-        | ) for storage.
+    h5 About DIO
+    br
+    ul
+        li
+            p
+                | <strong>Diagnosing applications' I/O behavior through system call observability</strong>.<br>
+                | Tânia Esteves, Ricardo Macedo, Rui Carlos Oliveira and João Paulo.<br>
+                | <em>53rd Annual IEEE/IFIP International Conference on Dependable Systems and Networks Workshops (DSN-W), 2023</em>. <br>
+                | <a href="https://taniaesteves.github.io/files/2023/dio-dcds23-taniaesteves.pdf"><img src="https://img.shields.io/badge/-pdf-darkgray?style=plastic&logo=Adobe%20Acrobat%20Reader&logoColor=white&labelColor=gray"/></a>
+                | <a href="https://taniaesteves.github.io/files/2023/dio-dcds23-taniaesteves-presentation.pdf"><img src="https://img.shields.io/badge/-slides-darkgray?style=plastic&logo=microsoft-powerpoint&logoColor=white&labelColor=gray"/></a>
+                | <a href="https://doi.org/10.1109/DSN-W58399.2023.00022"><img src="https://img.shields.io/badge/DOI-10.1109/DSN%E2%80%93W58399.2023.00022-darkgray?style=plastic&labelColor=gray"/></a>
+
+        li
+            p
+                | <strong>Toward a Practical and Timely Diagnosing of Applications' I/O Behavior.</strong>.<br>
+                | Tânia Esteves, Ricardo Macedo, Rui Carlos Oliveira and João Paulo.<br>
+                | <em>IEEE Access. 2023</em>. <br>
+                | <a href="https://doi.org/10.1109/ACCESS.2023.3322104"><img src="https://img.shields.io/badge/DOI-10.1109/ACCESS.2023.3322104-darkgray?style=plastic&labelColor=gray"/></a>
+
+                //- | <a href="https://doi.org/10.1109/ACCESS.2023.3322104" target="_blank" style="color: blue;">https://doi.org/10.1109/ACCESS.2023.3322104</a>
 
     br
-    h4 Backend
-    p
-        | The <em>backend</em> component persists and indexes events (
-        span.blackcircle 5
-        | ), and allows users to query and summarize (e.g., aggregate) stored information (
-        span.blackcircle 6
-        | ).
-        | It uses the Elasticsearch distributed engine for storing and processing large volumes of data.
-        | By providing an interface for searching, querying, and updating data, the backend allows users to develop and integrate customized data correlation algorithms.
-
+    h5 Using DIO
     br
-    h4 Visualizer
-    p
-        | The <em>visualizer</em> component provides near real-time visualization of the traced events by querying the backend (
-        span.blackcircle 7
-        | ).
-        | It uses Kibana, the data visualization dashboard software for Elasticsearch, which offers a web interface for data exploration and analysis. Moreover, it allows users to select specific types of data (e.g., system call type, arguments) to build different and customized representations.
+    ul
+        li
+            p
+                | <strong>CRIBA: A Tool for Comprehensive Analysis of Cryptographic Ransomware's I/O Behavior</strong>.<br>
+                | Tânia Esteves, Bruno Pereira, Rui Pedro Oliveira, João Marco and João Paulo.<br>
+                | <em>42nd International Symposium on Reliable Distributed Systems (SRDS), 2023</em>. <br>
+                | <a href="https://taniaesteves.github.io/files/2023/criba-srds23-taniaesteves.pdf"><img src="https://img.shields.io/badge/-pdf-darkgray?style=plastic&logo=Adobe%20Acrobat%20Reader&logoColor=white&labelColor=gray"/></a>
+                | <a href="https://taniaesteves.github.io/files/2023/criba-srds23-taniaesteves-presentation.pdf"><img src="https://img.shields.io/badge/-slides-darkgray?style=plastic&logo=microsoft-powerpoint&logoColor=white&labelColor=gray"/></a>
+
 
 
     .line
@@ -117,55 +175,28 @@ block content
 
     p DIO was testes and validated with two production-level systems.
 
-    br
-    h4 Redis
-    p
-        | Diagnosis of inefficient use of system calls that lead to poor storage performance
-        a(href='/use-cases/redis', target='_blank', style='color: blue;')  (see more).
-
-    br
-    h4 Elasticsearch
-    p
-        | Observation of unexpected file access patterns caused by the usage of high-level libraries that lead to redundant I/O calls.
-        a(href='/use-cases/elasticsearch', target='_blank', style='color: blue;')  (see more).
-
-    br
-    h4 Fluent Bit
-    p
-        | Root cause analysis of data loss caused by erroneous file accesses.
-        a(href='/use-cases/fluentbit', target='_self', style='color: blue;')  (see more).
-
-    br
-    h4 RocksDB
-    p
-        | Root cause analysis of resource contention in multi threaded I/O that leads to high tail latency for user workloads.
-        a(href='/use-cases/rocksdb', target='_self', style='color: blue;')  (see more).
-
-
-    .line
-
-    h2#publications Publications
 
     ul
         li
             p
-                | <strong>Diagnosing applications' I/O behavior through system call observability</strong>.<br>
-                | Tânia Esteves, Ricardo Macedo, Rui Carlos Oliveira and João Paulo.<br>
-                | <em>53rd Annual IEEE/IFIP International Conference on Dependable Systems and Networks Workshops (DSN-W)</em>. <br>
-                | <a href="https://doi.org/10.1109/DSN-W58399.2023.00022" target="_blank" style="color: blue;">https://doi.org/10.1109/DSN-W58399.2023.00022</a><br>
-                | <a href="https://doi.org/10.48550/arXiv.2304.08569" target="_blank" style="color: blue;">https://doi.org/10.48550/arXiv.2304.08569</a>
+                a(href='/use-cases/redis', target='_self', style='color: blue;')  <strong>Inefficient I/O behavior of Redis.</strong><br>
+                |  Diagnosis of inefficient use of system calls that lead to poor storage performance.
 
         li
             p
-                | <strong>CRIBA: A Tool for Comprehensive Analysis of Cryptographic Ransomware's I/O Behavior</strong>.<br>
-                | Tânia Esteves, Bruno Pereira, Rui Pedro Oliveira, João Marco and João Paulo.<br>
-                | <em>42nd International Symposium on Reliable Distributed Systems (SRDS)</em>. <br>
-                //- | <a href="https://doi.org/10.48550/arXiv.2304.08569" target="_blank" style="color: blue;">https://doi.org/10.48550/arXiv.2304.08569</a>
+                a(href='/use-cases/elasticsearch', target='_self', style='color: blue;')  <strong>Top-down exploration and diagnosis of Elasticsearch.</strong><br>
+                | Observation of unexpected file access patterns caused by the usage of high-level libraries that lead to redundant I/O calls.
 
-    .line
+        li
+            p
+                a(href='/use-cases/fluentbit', target='_self', style='color: blue;')  <strong>Identifying Fluent Bit's erroneous actions that lead to data loss.</strong><br>
+                | Root cause analysis of data loss caused by erroneous file accesses.
 
-    h2#download Download
+        li
+            p
+                a(href='/use-cases/rocksdb', target='_self', style='color: blue;')  <strong>Finding the Root Cause of RocksDB's Performance Anomalies.</strong><br>
+                | Root cause analysis of resource contention in multi threaded I/O that leads to high tail latency for user workloads.
 
-    p DIO is an open-source project available at
-        a(href='https://github.com/dsrhaslab/dio', target='_blank', style='color: blue;')  https://github.com/dsrhaslab/dio.
+
+    //- //- h2#download Download
 

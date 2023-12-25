@@ -48,6 +48,17 @@ html
 							a(href='/use-cases/rocksdb') RocksDB
 					//- li(class=path=="faq"?'active':undefined)
 					//- 	a(href='/faq') FAQ
+					//- li#nav-item-docs
+					//- 	a(href='/docs') Documentation
+					li#docs-menu
+						a.dropdown-toggle(href='#docsMenu' data-toggle='collapse' aria-expanded='false') Documentation
+					ul#docsMenu.collapse.list-unstyled(class='show')
+						li#nav-item-redis
+							a(href='/docs/about') About DIO
+						li#nav-item-elasticsearch
+							a(href='/docs/installation') Installation
+						li#nav-item-fluentbit
+							a(href='/docs/usage') Usage
 					li#nav-item-contacts
 						a(href='/contacts') Contacts
 				ul.list-unstyled.CTAs
@@ -108,4 +119,3 @@ html
 			} else if (identifier.startsWith("/contacts")) {
 				document.getElementById("nav-item-contacts").className = "active";
 			}
-			

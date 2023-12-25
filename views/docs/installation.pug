@@ -1,0 +1,80 @@
+extends ../layout.pug
+
+block navbar-options
+    li.nav-item.active
+        a.nav-link(href='/') Home
+    li.nav-item.active
+        a.nav-link(href='#about') About
+    li.nav-item
+        a.nav-link(href='#Installation') Installation
+
+block content
+    h1#installation Installation
+
+    br
+
+    p The installation and configuration of DIO are performed in two phases:
+
+        ol(type='i')
+            li the setup and initialization of the analysis pipeline;
+            li the configuration and execution of the tracer.
+
+    br
+
+    h3#installPipeline Analysis pipeline
+
+    br
+
+    p For setting up DIO's analysis pipeline, it is necessary to install the Elasticsearch and Kibana software and upload DIO's pre-defined dashboards. Folder <code>dio-pipeline</code> contains a docker-compose and ansible-playbooks to automatically create and set up DIO's pipeline.
+
+    p Start by clonning DIO's repository and accessing the <code>dio-pipeline</code> folder:
+
+    pre
+        | $ git clone https://github.com/dsrhaslab/dio.git
+        | $ cd dio-pipeline
+
+    br
+
+    h5#installPipelineDockerCompose > Via Docker-compose (single-node)
+
+    p The folder <code>docker-compose</code> contains a <code>docker-compose.yml</code> file that allows configuring one container for Elasticsearch and another for Kibana. It also has a <code>.env</code> file with important variables for setting up DIO's analysis pipeline.
+
+    ol
+        li Update the necessary variables in the <code>.env</code> file according to your setup.
+        li Run <code>docker-compose up</code> to start the containers.
+        li Ensure that you can access and log into Kibana:
+            ul
+                li Access <code>http://&lt;HOST_IP&gt;:&lt;KIBANA_PORT&gt</code> in your browser;
+                li Login in with:
+                    ul
+                        li Username: <code>"elastic"</code>;
+                        li Password: <code>"&lt;ELASTIC_PASSWORD&gt;"</code>; (the elastic password defined in <code>.env</code>).
+
+    br
+
+    h5#installPipelineKubernetes > Via Ansible & Kubernetes (multi-node)
+
+    br
+
+    p The folder <code>dio-pipeline</code> contains Ansible playbooks to automatically create and set up a Kubernetes cluster with all the required components.
+
+
+    ol
+        li Install Ansible and the required modules.
+        pre
+            |
+            | $ apt install ansible
+            | $ ansible-galaxy collection install ansible.posix
+            | $ ansible-galaxy collection install kubernetes.core
+            | $ ansible-galaxy collection install cloud.common
+            | $ ansible-galaxy collection install community.general
+            | $ ansible-galaxy collection install community.kubernetes
+
+        li Update the inventory file (<code>hosts.ini</code>) with the information of the machines where the pipeline should be installed. If more than one machine is used, Kibana will be installed on the Master machine, while Elasticsearch will run on workers' machines.
+        ul
+            li Add the <ins>master</ins> information in the group <code>"[master]"</code>
+            li Add the <ins>workers</ins> information in the group <code>"[node]"</code>
+        p Systax:
+            pre &lt;hostname&gt; ansible_host=&lt;host_ip&gt; ansible_python_interpreter='python3'
+
+    h3 Tracer

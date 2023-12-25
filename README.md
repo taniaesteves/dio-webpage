@@ -4,7 +4,8 @@
 ## Installing
 
 - install `node` (npm)
+- `npm install`
 
 ## Running
 
-- run `npm run start`
+- `npm run start`

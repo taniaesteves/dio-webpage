@@ -33,9 +33,15 @@ router.get('/docs/about', function(req, res){
 router.get('/docs/installation', function(req, res){
     res.sendFile('/docs/installation.html', { root: views });
 });
-router.get('/docs/syscalls', function(req, res){
-    res.sendFile('/docs/syscalls.html', { root: views });
+router.get('/docs/installation/pipeline', function(req, res){
+    res.sendFile('/docs/installation/pipeline.html', { root: views });
 });
+router.get('/docs/installation/tracer', function(req, res){
+    res.sendFile('/docs/installation/tracer.html', { root: views });
+});
+// router.get('/docs/syscalls', function(req, res){
+//     res.sendFile('/docs/syscalls.html', { root: views });
+// });
 router.get('/contacts', function(req, res){
     res.sendFile('contacts.html', { root: views });
 });

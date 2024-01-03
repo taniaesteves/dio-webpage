@@ -1,0 +1,94 @@
+extends ../../layout.pug
+
+block navbar-options
+    li.nav-item.active
+        a.nav-link(href='/') Home
+    li.nav-item.active
+        a.nav-link(href='/docs/installation') Installation
+    li.nav-item.active
+        a.nav-link(href='#dockerTracer') Docker Image
+    li.nav-item
+        a.nav-link(href='#installation') Source Code
+    li.nav-item
+        a.nav-link(href='#options') Options
+
+block content
+
+    h1#installPipeline Tracer
+
+    br
+
+    p DIO's tracer can either be installed manually or via Docker.
+
+    .line
+
+
+    h3#dockerTracer > From Docker Image
+
+    br
+
+    p The tracer is available in Docker Hub. To use it, run the following commands.
+
+    ol
+        li Pull DIO's tracer image from Docker Hub:
+        pre $ docker pull taniaesteves/dio:v1.0.1
+
+        li Run DIO's tracer container:
+        pre $ docker run -it --rm --name dio --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ taniaesteves/dio:v1.0.1 &lt;TARGET_COMMAND&gt;
+
+    .line
+
+    h3#dockerTracer > From source code
+
+    br
+
+    ol
+        li Install the following dependencies:
+        ul
+            li GO (v.1.17.4)
+            li
+                |
+                a(href="https://github.com/iovisor/bcc.git", target='_blank', style='color: blue;') BCC
+                |  (#1313fd6a5)
+        br
+        p
+            | The following commands can be used to install these dependencies:
+            pre $ bash scripts/install_dio_dependencies.sh (go|bcc|all)
+
+        li Build dio-tracer binary:
+        pre $ bash scripts/build.sh go
+
+        li Run DIO's tracer:
+        pre $ sudo bin/dio-tracer [options] -- &lt;TARGET_COMMAND&gt;
+
+        details
+            summary Example
+            pre $ sudo bin/dio-tracer --config config.yaml -- ls
+
+
+    .line
+
+    h4#options Options
+
+    br
+
+    ul
+        li
+            | To change DIO's configuration file, mount a volume for the <code>/usr/share/dio/conf/config.yaml</code> file.<br>
+            | Example: <code>-v &lt;path_to_local_config_file&gt;:/usr/share/dio/conf/config.yaml</code>.
+        li
+            |To export DIO Tracer's files (e.g., tracer logs and statistics), mount a volume for the <code>/dio_data</code> folder.<br>
+            | Example: <code>-v /tmp/dio_data:/dio_data</code>
+
+        li To run DIO's correlation path algorithm along with DIO's tracer use the following options:
+            ul
+                li <code>-e CORRELATE_PATHS=true</code>
+                li <code>-e ES_SERVERS=&lt;DIO_ES_URL&gt;:&lt;DIO_ES_PORT&gt;</code>
+
+
+    .line
+
+    p
+        | More information available at
+        |
+        a(href='https://github.com/dsrhaslab/dio/blob/main/dio-tracer/README.md', target='_blank', style='color: blue;') dio-tracer.

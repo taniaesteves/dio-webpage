@@ -33,8 +33,6 @@ html
 					p A tool for diagnosing applications I/O behavior
 					li#nav-item-home
 						a(href='/') Home
-					//- li#nav-item-usage
-					//- 	a(href='/usage') How to use
 					li#usecases-menu
 						a.dropdown-toggle(href='#usecasesMenu' data-toggle='collapse' aria-expanded='false') Use cases
 					ul#usecasesMenu.collapse.list-unstyled(class='show')
@@ -51,10 +49,16 @@ html
 					ul#docsMenu.collapse.list-unstyled(class='show')
 						li#nav-item-about
 							a(href='/docs/about') About DIO
-						li#nav-item-installation
-							a(href='/docs/installation') Installation
-						li#nav-item-syscalls
-							a(href='/docs/syscalls') Syscalls
+						//- li#nav-item-installation
+						li#docs-install-menu
+							a.dropdown-toggle(href='#installMenu' data-toggle='collapse' aria-expanded='false') Installation
+						ul#installMenu.collapse.list-unstyled(class='show')
+							li#nav-item-pipeline
+								a(href='/docs/installation/pipeline') Pipeline
+							li#nav-item-trace
+								a(href='/docs/installation/tracer') Tracer
+						//- li#nav-item-syscalls
+						//- 	a(href='/docs/syscalls') Syscalls
 					li#nav-item-contacts
 						a(href='/contacts') Contacts
 				ul.list-unstyled.CTAs

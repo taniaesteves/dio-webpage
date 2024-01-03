@@ -21,7 +21,7 @@ let rocksdb = require('./routes/use-cases/rocksdb');
 let fluentbit = require('./routes/use-cases/fluentbit');
 let about = require('./routes/docs/about');
 let installation = require('./routes/docs/installation');
-let usage = require('./routes/docs/usage');
+let syscalls = require('./routes/docs/syscalls');
 let contacts = require('./routes/contacts');
 app.use('/use-cases/redis', redis);
 app.use('/use-cases/elasticsearch', elasticsearch);
@@ -29,7 +29,7 @@ app.use('/use-cases/rocksdb', rocksdb);
 app.use('/use-cases/fluentbit', fluentbit);
 app.use('/docs/about', about);
 app.use('/docs/installation', installation);
-app.use('/docs/usage', usage);
+app.use('/docs/syscalls', syscalls);
 app.use('/contacts', contacts);
 
 // Start Server.

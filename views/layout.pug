@@ -46,19 +46,15 @@ html
 							a(href='/use-cases/fluentbit') Fluent Bit
 						li#nav-item-rocksdb
 							a(href='/use-cases/rocksdb') RocksDB
-					//- li(class=path=="faq"?'active':undefined)
-					//- 	a(href='/faq') FAQ
-					//- li#nav-item-docs
-					//- 	a(href='/docs') Documentation
 					li#docs-menu
 						a.dropdown-toggle(href='#docsMenu' data-toggle='collapse' aria-expanded='false') Documentation
 					ul#docsMenu.collapse.list-unstyled(class='show')
-						li#nav-item-redis
+						li#nav-item-about
 							a(href='/docs/about') About DIO
-						li#nav-item-elasticsearch
+						li#nav-item-installation
 							a(href='/docs/installation') Installation
-						li#nav-item-fluentbit
-							a(href='/docs/usage') Usage
+						li#nav-item-syscalls
+							a(href='/docs/syscalls') Syscalls
 					li#nav-item-contacts
 						a(href='/contacts') Contacts
 				ul.list-unstyled.CTAs
@@ -106,8 +102,12 @@ html
 			console.log("identifier: " + identifier)
 			if (identifier === "/") {
 				document.getElementById("nav-item-home").className = "active";
-			//- } else if (identifier.startsWith("/usage")) {
-			//- 	document.getElementById("nav-item-usage").className = "active";
+			} else if (identifier.startsWith("/about")) {
+				document.getElementById("nav-item-about").className = "active";
+			} else if (identifier.startsWith("/installation")) {
+				document.getElementById("nav-item-installation").className = "active";
+			} else if (identifier.startsWith("/syscalls")) {
+				document.getElementById("nav-item-syscalls").className = "active";
 			} else if (identifier.startsWith("/redis")) {
 				document.getElementById("nav-item-redis").className = "active";
 			} else if (identifier.startsWith("/elasticsearch")) {

@@ -19,13 +19,14 @@ block content
             li the setup and initialization of the analysis pipeline;
             li the configuration and execution of the tracer.
 
-    br
+    .line
 
     h3#installPipeline Analysis pipeline
 
     br
 
-    p For setting up DIO's analysis pipeline, it is necessary to install the Elasticsearch and Kibana software and upload DIO's pre-defined dashboards. Folder <code>dio-pipeline</code> contains a docker-compose and ansible-playbooks to automatically create and set up DIO's pipeline.
+    p To set up DIO's analysis pipeline, it is necessary to install the Elasticsearch and Kibana software and upload DIO's pre-defined dashboards. Folder <code>dio-pipeline</code> contains a docker-compose file and Ansible playbooks to create and set up DIO's pipeline automatically.
+
 
     p Start by clonning DIO's repository and accessing the <code>dio-pipeline</code> folder:
 
@@ -45,7 +46,7 @@ block content
         li Ensure that you can access and log into Kibana:
             ul
                 li Access <code>http://&lt;HOST_IP&gt;:&lt;KIBANA_PORT&gt</code> in your browser;
-                li Login in with:
+                li Log in with:
                     ul
                         li Username: <code>"elastic"</code>;
                         li Password: <code>"&lt;ELASTIC_PASSWORD&gt;"</code>; (the elastic password defined in <code>.env</code>).
@@ -70,11 +71,127 @@ block content
             | $ ansible-galaxy collection install community.general
             | $ ansible-galaxy collection install community.kubernetes
 
-        li Update the inventory file (<code>hosts.ini</code>) with the information of the machines where the pipeline should be installed. If more than one machine is used, Kibana will be installed on the Master machine, while Elasticsearch will run on workers' machines.
+        li Update the inventory file (<code>hosts.ini</code>)  with the servers' information on where the pipeline should be installed. If more than one server is used, Kibana will be installed on the master, while Elasticsearch will run on workers'.
         ul
             li Add the <ins>master</ins> information in the group <code>"[master]"</code>
             li Add the <ins>workers</ins> information in the group <code>"[node]"</code>
-        p Systax:
-            pre &lt;hostname&gt; ansible_host=&lt;host_ip&gt; ansible_python_interpreter='python3'
+
+        br
+
+        details
+            summary Syntax
+            ul
+                pre &lt;hostname&gt; ansible_host=&lt;host_ip&gt; ansible_python_interpreter='python3'
+
+        details
+            summary Example
+            ul
+                pre
+                    | &lt;master&gt;
+                    | master ansible_host=192.168.56.100 ansible_python_interpreter='python3'
+
+                pre
+                    | &lt;node&gt;
+                    | worker1 ansible_host=192.168.56.101 ansible_python_interpreter='python3'
+                    | worker2 ansible_host=192.168.56.102 ansible_python_interpreter='python3'
+
+                pre
+                    | &lt;kibana:children&gt;
+                    | master
+
+                pre
+                    | &lt;kube_cluster:children&gt;
+                    | master
+                    | node
+
+        br
+
+        li Run the <code>run_dio_pipeline.sh</code> script to install and configure DIO's pipeline.
+
+        pre $ bash run_dio_pipeline.sh install_dio_pipeline
+
+        li Ensure that you can access and log into Kibana:
+            ul
+                li Access <code>http://&lt;MASTER_IP OR WORKER_IP&gt;:32222</code> in your browser;
+                li Default credentials are:
+                    ul
+                        li Username: <code>"dio"</code>;
+                        li Password: <code>"diopw"</code>;
+                li Credentials can be changed on the <code>group_vars/kube_cluster.yml</code> file (variables <code>dio_es_user</code> and <code>dio_es_pass</code>).
+
+
+    p
+        | More information available at
+        |
+        a(href='https://github.com/dsrhaslab/dio/blob/main/dio-pipeline/README.md', target='_blank', style='color: blue;') dio-pipeline.
+
+    .line
 
     h3 Tracer
+
+    br
+
+    p DIO's tracer can either be installed manually or via Docker.
+    br
+
+    h5#dockerTracer > From Docker Image
+
+    br
+
+    p The tracer is available in Docker Hub. To use it, run the following commands.
+
+    ol
+        li Pull DIO's tracer image from Docker Hub:
+        pre $ docker pull taniaesteves/dio:v1.0.1
+
+        li Run DIO's tracer container:
+        pre $ docker run -it --rm --name dio --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ taniaesteves/dio:v1.0.1 &lt;TARGET_COMMAND&gt;
+
+    br
+
+    h5#dockerTracer > From source code
+
+    br
+
+    ol
+        li Install the following dependencies:
+        ul
+            li GO (v.1.17.4)
+            li
+                |
+                a(href="https://github.com/iovisor/bcc.git", target='_blank', style='color: blue;') BCC
+                |  (#1313fd6a5)
+        br
+        p
+            | The following commands can be used to install these dependencies:
+            pre $ bash scripts/install_dio_dependencies.sh (go|bcc|all)
+
+        li Build dio-tracer binary:
+        pre $ bash scripts/build.sh go
+
+        li Run DIO's tracer:
+        pre $ sudo bin/dio-tracer [options] -- &lt;TARGET_COMMAND&gt;
+
+        details
+            summary Example
+            pre $ sudo bin/dio-tracer --config config.yaml -- ls
+
+    h6 Options:
+
+    ul
+        li
+            | To change DIO's configuration file, mount a volume for the <code>/usr/share/dio/conf/config.yaml</code> file.<br>
+            | Example: <code>-v &lt;path_to_local_config_file&gt;:/usr/share/dio/conf/config.yaml</code>.
+        li
+            |To export DIO Tracer's files (e.g., tracer logs and statistics), mount a volume for the <code>/dio_data</code> folder.<br>
+            | Example: <code>-v /tmp/dio_data:/dio_data</code>
+
+        li To run DIO's correlation path algorithm along with DIO's tracer use the following options:
+            ul
+                li <code>-e CORRELATE_PATHS=true</code>
+                li <code>-e ES_SERVERS=&lt;DIO_ES_URL&gt;:&lt;DIO_ES_PORT&gt;</code>
+
+    p
+        | More information available at
+        |
+        a(href='https://github.com/dsrhaslab/dio/blob/main/dio-tracer/README.md', target='_blank', style='color: blue;') dio-tracer.

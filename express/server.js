@@ -27,14 +27,14 @@ router.get('/use-cases/rocksdb', function(req, res){
 router.get('/use-cases/fluentbit', function(req, res){
     res.sendFile('use-cases/fluentbit.html', { root: views });
 });
-router.get('/use-cases/about', function(req, res){
-    res.sendFile('/use-cases/about.html', { root: views });
+router.get('/docs/about', function(req, res){
+    res.sendFile('/docs/about.html', { root: views });
 });
-router.get('/use-cases/installation', function(req, res){
-    res.sendFile('/use-cases/installation.html', { root: views });
+router.get('/docs/installation', function(req, res){
+    res.sendFile('/docs/installation.html', { root: views });
 });
-router.get('/use-cases/usage', function(req, res){
-    res.sendFile('/use-cases/usage.html', { root: views });
+router.get('/docs/syscalls', function(req, res){
+    res.sendFile('/docs/syscalls.html', { root: views });
 });
 router.get('/contacts', function(req, res){
     res.sendFile('contacts.html', { root: views });

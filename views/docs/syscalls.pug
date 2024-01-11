@@ -1,20 +1,114 @@
 extends ../layout.pug
 
+block styles
+    link(rel='stylesheet' href='/css/table.css')
+
 block navbar-options
     li.nav-item.active
-        a.nav-link(href='/') Home
+        a.nav-link(href='#syscalls') Syscalls
     li.nav-item.active
-        a.nav-link(href='#about') About
-    li.nav-item
-        a.nav-link(href='#installation') Installation
+        a.nav-link(href='#fields') Fields
 
 block content
-    h1#usage Supported System calls
+    h1#syscalls Supported System calls
 
     br
 
-    h3 Storage
+    h4 Storage
+
+    table.table-default.table-striped.table-bordered.sortable
+        thead
+            tr
+            th Type
+            th Syscall
+        tbody
+            tr
+                td Data
+                td read, pread64, readv, write, pwrite64, writev, fsync, fdatasync, readahead
+            tr
+                td Metadata
+                td creat, open, openat, close, lseek, truncate, ftruncate, rename, renameat, renameat2, unlink, unlinkat, readlink, readlinkat, stat, lstat, fstat, fstatfs, fstatat
+            tr
+                td Extended Attributes
+                td getxattr, lgetxattr, fgetxattr, setxattr, lsetxattr, fsetxattr, listxattr, llistxattr, flistxattr, removexattr, lremovexattr, fremovexattr
+            tr
+                td Directory
+                td mknod, mknodat
 
     br
 
-    h3 Network
+    h4 Network
+
+    table.table-default.table-striped.table-bordered.sortable
+        thead
+            tr
+            th Type
+            th Syscall
+        tbody
+            tr
+                td Socket Management
+                td socket, socketpair, bind, connect, listen, accept, accept4
+            tr
+                td Data Transfer
+                td recvfrom, recvmsg, sendto, sendmsg
+            tr
+                td Socket Options
+                td getsockopt, setsockopt
+
+
+    .line
+
+    h1#fields Fields
+
+    br
+
+    h4#commonfields Common fields
+
+    table.table-default.table-striped.table-bordered.sortable
+        thead
+            tr
+            th Field
+            th Description
+        tbody
+            tr
+                td
+                    code system_call_name
+                td The name of the intercepted system call.
+            tr
+                td
+                    code time_called
+                td The time the system call started.
+            tr
+                td
+                    code time_returned
+                td The time the system call ended.
+            tr
+                td
+                    code execution_time
+                td Difference between time_called and time_returned (in nanoseconds).
+            tr
+                td
+                    code pid
+                td The identifier of the process that issued the system call.
+            tr
+                td
+                    code tid
+                td The identifier of the thread that issued the system call.
+            tr
+                td
+                    code host
+                td The hostname of the machine.
+            tr
+                td
+                    code thread
+                td Thread name (format: &lt;tid&gt;@&lt;host&gt;).
+            tr
+                td
+                    code comm
+                td The command that issued the system call.
+            tr
+                td
+                    code return_value
+                td The return value of the system call.
+
+

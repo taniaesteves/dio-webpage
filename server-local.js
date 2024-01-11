@@ -23,7 +23,7 @@ let about = require('./routes/docs/about');
 let installation = require('./routes/docs/installation');
 let installationPipeline = require('./routes/docs/installation/pipeline');
 let installationTracer = require('./routes/docs/installation/tracer');
-// let syscalls = require('./routes/docs/syscalls');
+let syscalls = require('./routes/docs/syscalls');
 let contacts = require('./routes/contacts');
 app.use('/use-cases/redis', redis);
 app.use('/use-cases/elasticsearch', elasticsearch);
@@ -33,7 +33,7 @@ app.use('/docs/about', about);
 app.use('/docs/installation', installation);
 app.use('/docs/installation/pipeline', installationPipeline);
 app.use('/docs/installation/tracer', installationTracer);
-// app.use('/docs/syscalls', syscalls);
+app.use('/docs/syscalls', syscalls);
 app.use('/contacts', contacts);
 
 // Start Server.

@@ -29,10 +29,10 @@ block content
 
     ol
         li Pull DIO's tracer image from Docker Hub:
-        pre $ docker pull taniaesteves/dio:v1.0.1
+        pre $ docker pull taniaesteves/dio-tracer:v1.0.1
 
         li Run DIO's tracer container:
-        pre $ docker run -it --rm --name dio --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ taniaesteves/dio:v1.0.1 &lt;TARGET_COMMAND&gt;
+        pre $ docker run -it --rm --name dio --pid=host --privileged --cap-add=ALL --net=host -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /sys/kernel/debug/:/sys/kernel/debug/ taniaesteves/dio-tracer:v1.0.1 &lt;TARGET_COMMAND&gt;
 
     .line
 

@@ -42,7 +42,7 @@ block content
                         li Password: <code>"&lt;ELASTIC_PASSWORD&gt;"</code>; (the elastic password defined in <code>.env</code>).
         li Import DIO's dashboards into Kibana:
         pre
-            | $ curl -u "elastic:<ELASTIC_PASSWORD>" -X POST -k "http://<HOST_IP>:<KIBANA_PORT>/api/saved_objects/_import" -H "kbn-xsrf: true" --form file=@dio_dashboards.ndjson
+            | $ curl -u "elastic:&lt;ELASTIC_PASSWORD&gt;" -X POST -k "http://&lt;HOST_IP&gt;:&lt;KIBANA_PORT&gt;/api/saved_objects/_import" -H "kbn-xsrf: true" --form file=@dio_dashboards.ndjson
 
     .line
 
